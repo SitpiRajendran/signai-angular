@@ -1,0 +1,50 @@
+<div class="columns m-0 p-0" style="background: #161616; width: 100%; height: 100%">
+    <app-menu class="column is-2" style="display: flex; flex-direction: column; justify-content: space-between;" [contact_name]="'Sitpi RAJENDRAN'" [contact_mail]="'sitpi.rajendran@signai.fr'" [contact_telephone]="'+33.6.68.62.99.53'"></app-menu>
+    <div class="column is-10">
+        <div class="side-box">
+            <div style="display: flex; justify-content: space-between;">
+                <p class="title is-4 has-text-white pt-6 pl-6">Dashboard</p>
+                <a href="/demande1"><button class="button has-text-weight-bold mt-6 mr-6"
+                    style="width: 200px; background: white; border-radius: 5px;  color: black" >+ Demande de
+                    Projet</button></a>
+            </div>
+            <div class="sub-box mx-2 mt-2">
+                <p class="subtitle is-5 has-text-white px-6">Mes projets en cours</p>
+                <div class="columns is-multiline pl-6 ml-1">
+                    <a *ngFor="let project of projectlist" class="column is-2 mr-5 mb-3 is-clickable"
+                        style="background: conic-gradient(from 180deg at 50% 50%, rgba(255, 0, 0, 0) -0.31deg, #c0bd00 0.74deg, rgba(255, 0, 0, 0) 359.69deg, #bbff00 360.74deg), #ff3c00; border-radius: 14px;" href="/details?id={{project.id}}">
+                        <p class="title is-6 pt-2" style="text-align: center; color: #FFFFFF;">
+                            {{project.name}}</p>
+                        <div style="display: flex;justify-content: space-between; ">
+                            <p class="has-text-white is-size-8">{{project.id}}</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="sub-box mx-2 mt-6">
+                <p class="subtitle is-5 has-text-white px-6">Mes projets terminées</p>
+                <div class="columns is-multiline pl-6 ml-1">
+                    <div class="column is-2 mr-5 mb-3"
+                        style="background: conic-gradient(from 180deg at 50% 50%, rgba(255, 0, 0, 0) -0.31deg, #4bcc00 0.74deg, rgba(255, 0, 0, 0) 359.69deg, #739c00 360.74deg), #036600; border-radius: 14px;">
+                        <p class="title is-6 pt-2" style="text-align: center; color: #FFFFFF;">
+                            PLACE VENDÔME</p>
+                        <div style="display: flex;justify-content: space-between; ">
+                            <p class="has-text-white is-size-8">12/03/11</p>
+                            <p class="has-text-white is-size-8">12/03/11</p>
+                        </div>
+                    </div>
+                    <div class="column is-2 mr-5 mb-3"
+                        style="background: conic-gradient(from 180deg at 50% 50%, rgba(255, 0, 0, 0) -0.31deg, #e2008b 0.74deg, rgba(4, 0, 255, 0) 359.69deg, #cc279a 360.74deg), #7940c4; border-radius: 14px;">
+                        <p class="title is-6 pt-2" style="text-align: center; color: #FFFFFF;">
+                            PLACE VENDÔME</p>
+                        <div style="display: flex;justify-content: space-between; ">
+                            <p class="has-text-white is-size-8">12/03/11</p>
+                            <p class="has-text-white is-size-8">12/03/11</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

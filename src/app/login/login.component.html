@@ -1,0 +1,35 @@
+<div class="login-div">
+    <img src="assets/logo.png"
+        style="width: 10%;  display: block; margin-left: auto; margin-right: auto; padding-top: 7%;">
+    <div class="login-box pb-5">
+        <p
+            style="font-family: Poppins; font-size: 18px; font-style: normal; font-weight: 400; line-height: 27px; letter-spacing: 0em; text-align: center; color: #FFFFFF; padding-top: 5%; ">
+            Bienvenue</p>
+        <p
+            style="font-family: Poppins; font-size: 24px; font-style: normal; font-weight: 700; line-height: 36px; letter-spacing: 0em; text-align: center; color: #FFFFFF;">
+            Connectez-vous à votre compte</p>
+            <div class="field m-3 mx-6 has-background-danger has-text-white has-text-centered " style="border-radius: 5px;">
+                <p *ngIf="errormsg" class="py-1">{{errormsg}}</p>
+            </div>
+        <div class="field px-6 mt-4">
+            <label class="label has-text-white">Email</label>
+            <div class="control">
+                <input class="input" #mail
+                    style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;" type="mail"
+                    placeholder="">
+            </div>
+        </div>
+        <div class="field px-6 mt-3">
+            <label class="label has-text-white">Mot de Passe</label>
+            <div class="control">
+                <input class="input" #password
+                    style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;" type="password"
+                    placeholder="">
+                    <p class="help has-text-white">Mot de passe oublié ?</p>
+            </div>
+        </div>
+        <div class="control mt-4">
+            <button class="button has-text-weight-bold" style="width: 200px; margin-left: 30%; background: #2C1F81; border-radius: 5px; border-color: #2C1F81; color: white" (click)="verifyconnection(mail.value, password.value)">SE CONNECTER</button>
+          </div>
+    </div>
+</div>

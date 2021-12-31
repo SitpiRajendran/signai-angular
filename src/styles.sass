@@ -1,0 +1,55 @@
+@charset "utf-8"
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700%7CPoppins:400,500,600,700,800')
+
+$family-primary: 'Poppins'
+$family-sans-serif: 'Poppins'
+
+html, body
+    height: 100%
+    width: 100%
+
+.is-size-8
+    font-size: 0.75rem
+
+.login-div
+    width: 100%
+    height: 100%
+    background-image: url("assets/background.jpg")
+    background-position-y: center
+    background-size: cover
+
+@keyframes fadeInAnimation
+    0%
+        opacity: 0
+        transform: translatey(-20px)
+
+    100%
+        opacity: 1
+        transform: translatey(0px)
+
+.login-box
+    display: block
+    margin-top: 5%
+    margin-left: auto
+    margin-right: auto
+    width: 550px
+    background: #1A1C20
+    box-shadow: 8px 23px 18px rgba(0, 0, 0, 0.57)
+    border-radius: 20px
+    animation: fadeInAnimation ease 1s
+    animation-iteration-count: 1
+    animation-fill-mode: forwards
+
+.side-box
+    background: #1A1C20
+    border-radius: 24px
+    width: 99%
+    height: 95%
+    margin-top: 2%
+
+.ol-viewport
+    border-radius: 24px
+
+.ol-unselectable
+    margin: 1px
+@import "../node_modules/bulma/bulma.sass"
