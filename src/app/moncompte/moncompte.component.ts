@@ -4,13 +4,13 @@ import { BackendService } from '../backend.service';
 import { CookieService } from 'ngx-cookie-service';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.sass']
+  selector: 'app-moncompte',
+  templateUrl: './moncompte.component.html',
+  styleUrls: ['./moncompte.component.sass']
 })
-export class DashboardComponent implements OnInit {
+export class MoncompteComponent implements OnInit {
 
-  public projectlist: any = [];
+  public userinfo: any = [];
   public errormsg: string = "";
 
   constructor(private router: Router, private backend:BackendService, private cookieService: CookieService,) { }
@@ -19,19 +19,14 @@ export class DashboardComponent implements OnInit {
     if (!this.cookieService.check('token'))
     this.router.navigate(['/login'])
 
-    this.backend.getProjectList().subscribe({
+    this.backend.getUserInfo().subscribe({
      next: (res) => {
-        this.projectlist = JSON.parse(JSON.stringify(res));
+        this.userinfo = JSON.parse(JSON.stringify(res));
      },
      error: (error) => {
         console.error(error.error, error)
         this.errormsg = error.error;
      }})
   }
-
-  routewithData(projectId: string) {
-    this.router.navigate(['/details', {projectid: projectId}])
-  }
-//https://jsonplaceholder.typicode.com/posts/1/comments
 
 }

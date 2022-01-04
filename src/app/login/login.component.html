@@ -33,3 +33,25 @@
           </div>
     </div>
 </div>
+
+<div class="modal is-active" *ngIf="!cookiesaccepted">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head" style="background: #2C1F81">
+        <p class="modal-card-title has-text-white">SignAi et votre vie privée</p>
+      </header>
+      <section class="modal-card-body has-background-black has-text-white">
+        Pour améliorer votre expérience utilisateur, le site de Signai utilise des cookies ou technologues similaires. Ils sont détaillés ci-dessous :
+        <br>
+        <br>
+        - <b>Gestion de connexion :</b> Afin de vous garder connecter et que vous puissez utiliser notre site internet. 
+        <br>
+        <br>
+        - <b>Acceptation des cookies :</b> Pour ne pas vous déranger, à chaque fois avec cet pop-up, nous stockons votre choix dans un cookie. 
+      </section>
+      <footer class="modal-card-foot has-background-black">
+        <button class="button is-success" (click)="acceptcookies()">J'accepte</button>
+        <a href="/nocookies"><button class="button has-background-black has-text-white">Refuser et quitter le site</button></a>
+      </footer>
+    </div>
+  </div>

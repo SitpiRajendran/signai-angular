@@ -10,14 +10,24 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class LoginComponent implements OnInit {
   public errormsg: string = '';
+  public cookiesaccepted: boolean = false;
 
   constructor(
     private router: Router,
     private backend: BackendService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.cookiesaccepted = this.cookieService.check('cookiesaccepted')
+    if (this.cookieService.check('token'))
+      this.router.navigate(['/dashboard'])
+  }
+
+  acceptcookies():void {
+    this.cookiesaccepted = true;
+    this.cookieService.set('cookiesaccepted', 'true')
+  }
 
   verifyconnection(mail: string, password: string) {
     if (!mail || !password) {

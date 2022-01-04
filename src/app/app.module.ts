@@ -11,14 +11,18 @@ import { MenuComponent } from './menu/menu.component';
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { Demande1Component } from './demande1/demande1.component';
 import { Demande2Component } from './demande2/demande2.component';
+import { NocookiesComponent } from './nocookies/nocookies.component';
+import { MoncompteComponent } from './moncompte/moncompte.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
+  { path: 'nocookies', component: NocookiesComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'details/:projectId', component: ProjectDetailComponent },
   { path: 'demande1', component: Demande1Component },
   { path: 'demande2', component: Demande2Component },
+  { path: 'moncompte', component: MoncompteComponent },
 ];
 
 @NgModule({
@@ -30,6 +34,8 @@ const routes: Routes = [
     ProjectDetailComponent,
     Demande1Component,
     Demande2Component,
+    NocookiesComponent,
+    MoncompteComponent,
   ],
   imports: [
     BrowserModule,

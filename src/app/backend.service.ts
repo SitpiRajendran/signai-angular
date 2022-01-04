@@ -18,4 +18,10 @@ export class BackendService {
     console.log(token)
     return this.http.get("https://jsonplaceholder.typicode.com/posts/1/comments", {headers: new HttpHeaders({'authorization' : token})})
   }
+
+  getUserInfo() {
+    let token = "Bearer " + this.cookieService.get('token');
+    console.log(token)
+    return this.http.get("http://localhost:3001/user/info/me", {headers: new HttpHeaders({'authorization' : token})})
+  }
 }
