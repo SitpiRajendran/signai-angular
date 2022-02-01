@@ -41,6 +41,10 @@ export class LoginComponent implements OnInit {
             'token',
             JSON.parse(JSON.stringify(res)).accessToken
           );
+          this.cookieService.set(
+            'email',
+            mail
+          );
           this.router.navigate(['/dashboard']);
         },
         error: (error) => {

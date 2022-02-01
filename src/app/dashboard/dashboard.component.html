@@ -12,11 +12,11 @@
                 <p class="subtitle is-5 has-text-white px-6">Mes projets en cours</p>
                 <div class="columns is-multiline pl-6 ml-1">
                     <a *ngFor="let project of projectlist" class="column is-2 mr-5 mb-3 is-clickable"
-                        style="background: conic-gradient(from 180deg at 50% 50%, rgba(255, 0, 0, 0) -0.31deg, #c0bd00 0.74deg, rgba(255, 0, 0, 0) 359.69deg, #bbff00 360.74deg), #ff3c00; border-radius: 14px;" href="/details?id={{project.id}}">
+                        style="background: conic-gradient(from 180deg at 50% 50%, rgba(255, 0, 0, 0) -0.31deg, #c0bd00 0.74deg, rgba(255, 0, 0, 0) 359.69deg, #bbff00 360.74deg), #ff3c00; border-radius: 14px;" href="/details/{{project._id}}">
                         <p class="title is-6 pt-2" style="text-align: center; color: #FFFFFF;">
                             {{project.name}}</p>
                         <div style="display: flex;justify-content: space-between; ">
-                            <p class="has-text-white is-size-8">{{project.id}}</p>
+                            <p class="has-text-white is-size-8">{{project.createdAt.slice(0,10)}}</p>
                         </div>
                     </a>
                 </div>
