@@ -12,7 +12,7 @@
                         <label class="label has-text-white">Types de Contraintes</label>
                         <div class="select is-fullwidth">
                             <select id="contstrainttype"
-                                style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;">
+                                style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;" (change)="changeSelect()">
                                 <option value="trafficlight">🚦 Feu de Signalisation</option>
                                 <option value="stop">🛑 Panneau Stop</option>
                                 <option value="yield">🔻 Cédez le Passage</option>
@@ -35,7 +35,27 @@
                     </div>
                     <div class="field px-6">
                         <label class="label has-text-white">Information Supplémentaire</label>
-                        <div class="control">
+                        <div class="control columns" *ngIf="contstrainttype == 'trafficlight'">
+                            <div class="column">
+                                <p class="has-text-white pb-1">Temps 🟢 (en s) :</p>
+                                <input class="input"
+                                    style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;"
+                                    type="number" placeholder="" id="contstraintdesc-vert">
+                            </div>
+                            <div class="column">
+                                <p class="has-text-white pb-1">Temps 🟠 (en s) :</p>
+                                <input class="input"
+                                    style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;"
+                                    type="number" placeholder="" id="contstraintdesc-orange">
+                            </div>
+                            <div class="column">
+                                <p class="has-text-white pb-1">Temps 🔴 (en s) :</p>
+                                <input class="input"
+                                    style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;"
+                                    type="number" placeholder="" id="contstraintdesc-rouge">
+                            </div>
+                        </div>
+                        <div class="control" *ngIf="contstrainttype != 'trafficlight'">
                             <input class="input"
                                 style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;"
                                 type="textarea" placeholder="" id="contstraintdesc">

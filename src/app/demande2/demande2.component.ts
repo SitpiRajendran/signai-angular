@@ -24,6 +24,7 @@ export class Demande2Component implements OnInit {
   map: any;
   contstraintlat: number = 0;
   contstraintlong: number = 0;
+  contstrainttype: string = "trafficlight";
 
   contraintList: Array<any> = [];
 
@@ -96,6 +97,11 @@ export class Demande2Component implements OnInit {
       String(this.contstraintlong);
   }
 
+  changeSelect() {
+    this.contstrainttype = (<HTMLInputElement>document.getElementById('contstrainttype'))
+    .value;
+  }
+
   addInList() {
     let type = (<HTMLInputElement>document.getElementById('contstrainttype'))
       .value;
@@ -104,11 +110,25 @@ export class Demande2Component implements OnInit {
     let longitude = (<HTMLInputElement>(
       document.getElementById('contstraintlong')
     )).value;
-    let description = (<HTMLInputElement>(
-      document.getElementById('contstraintdesc')
-    )).value;
-    var object = { type, longitude, latitude, description };
 
+    let description = ""
+    if (type == "trafficlight") {
+      let vert = (<HTMLInputElement>(
+        document.getElementById('contstraintdesc-vert')
+      )).value;
+      let orange = (<HTMLInputElement>(
+        document.getElementById('contstraintdesc-orange')
+      )).value;
+      let rouge = (<HTMLInputElement>(
+        document.getElementById('contstraintdesc-rouge')
+      )).value;
+      description = vert + '/' + orange + '/' + rouge;
+    } else {
+      description = (<HTMLInputElement>(
+        document.getElementById('contstraintdesc')
+      )).value;     
+    }
+    var object = { type, longitude, latitude, description };
     console.log(object);
     this.contraintList.push(object);
     this.addPoint(+latitude, +longitude, type);

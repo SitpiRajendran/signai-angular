@@ -37,7 +37,6 @@ export class DashboardComponent implements OnInit {
         this.backend.getProjectListMyCompany(company).subscribe({
           next: (res) => {
              this.projectlist = JSON.parse(JSON.stringify(res));
-    console.log(this.projectlist)
 
           },
           error: (error) => {
