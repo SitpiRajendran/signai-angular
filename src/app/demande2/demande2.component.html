@@ -30,9 +30,10 @@
                                 style="margin-left: 4%; width: 48%; background: #22252C; border-radius: 5px; border-color: #22252C; color: white;"
                                 type="text" id="contstraintlong" placeholder="Longitude">
                         </div>
-<p style="font-size: small;">Vous pouvez diretement cliquer sur la carte pour remplir les champs</p>
+                        <p style="font-size: small;">Vous pouvez diretement cliquer sur la carte pour remplir les champs
+                        </p>
                     </div>
-                    <div class="field px-6">
+                    <div class="field px-6" id="moreinfo">
                         <label class="label has-text-white">Information Supplémentaire</label>
                         <div class="control">
                             <input class="input"
@@ -41,18 +42,20 @@
                         </div>
                     </div>
                     <button class="button has-text-weight-bold"
-                        style="width: 250px; background: white; border-radius: 5px; border-color:white; color: #22252C; margin-left: 50%; margin-top: 1%">Ajouter la contrainte +</button>
+                        style="width: 250px; background: white; border-radius: 5px; border-color:white; color: #22252C; margin-left: 50%; margin-top: 1%">Ajouter
+                        la contrainte +</button>
 
-                <div class="field px-6 mt-3 has-text-white">
-                    <label class="label has-text-white">Listes des Contraintes (3)</label>
-                    <ul>
-                        <li>🚦 Feu de Signalisation à 48.856892, 2.350850</li>
-                        <li>🛑 Panneau Stop à 48.856892, 2.350850</li>
-                        <li>🚦 Feu de Signalisation à 48.856892, 2.350850</li>
-                      </ul>
-                </div>
-                <a href="/dashboard"> <button class="button has-text-weight-bold"
-                    style="width: 200px; background: #2C1F81; border-radius: 5px; border-color: #2C1F81; color: white; margin-left: 60%;">Terminer la demande</button></a>
+                    <div class="field px-6 mt-3 has-text-white">
+                        <label class="label has-text-white">Listes des Contraintes (3)</label>
+                        <ul>
+                            <li>🚦 Feu de Signalisation à 48.856892, 2.350850</li>
+                            <li>🛑 Panneau Stop à 48.856892, 2.350850</li>
+                            <li>🚦 Feu de Signalisation à 48.856892, 2.350850</li>
+                        </ul>
+                    </div>
+                    <a href="/dashboard"> <button class="button has-text-weight-bold"
+                            style="width: 200px; background: #2C1F81; border-radius: 5px; border-color: #2C1F81; color: white; margin-left: 60%;">Terminer
+                            la demande</button></a>
 
                 </div>
                 <div class="column is-6 map p-0" id="map" style="border-radius: 24px;">
