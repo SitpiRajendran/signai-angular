@@ -19,14 +19,32 @@ export class DashboardComponent implements OnInit {
     if (!this.cookieService.check('token'))
     this.router.navigate(['/login'])
 
-    this.backend.getProjectList().subscribe({
-     next: (res) => {
-        this.projectlist = JSON.parse(JSON.stringify(res));
-     },
-     error: (error) => {
-        console.error(error.error, error)
-        this.errormsg = error.error;
-     }})
+    this.backend.getUserInfo().subscribe({
+      next: (res) => {
+        let type = JSON.parse(JSON.stringify(res)).type;
+        let company = JSON.parse(JSON.stringify(res)).company;
+        console.log(type +" " + company)
+        if (type == 'admin') {
+        this.backend.getProjectList().subscribe({
+          next: (res) => {
+             this.projectlist = JSON.parse(JSON.stringify(res));
+          },
+          error: (error) => {
+             console.error(error.error, error)
+             this.errormsg = error.error;
+          }})
+        }
+        this.backend.getProjectListMyCompany(company).subscribe({
+          next: (res) => {
+             this.projectlist = JSON.parse(JSON.stringify(res));
+
+          },
+          error: (error) => {
+             console.error(error.error, error)
+             this.errormsg = error.error;
+          }})
+    }
+    })
   }
 
   routewithData(projectId: string) {

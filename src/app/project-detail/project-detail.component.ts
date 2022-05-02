@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { BackendService } from '../backend.service';
 
 declare var ol: any;
 
@@ -10,62 +11,58 @@ declare var ol: any;
 })
 export class ProjectDetailComponent implements OnInit {
   projectId: string = '';
-  latitude: number = 48.8153;
-  longitude: number = 2.3629;
-  trafficlight: string =
-    'https://www.pinclipart.com/picdir/big/283-2832896_traffic-light-clipart-emoji-png-download.png';
-  stop: string =
-    'https://cdn-0.emojis.wiki/emoji-pics/twitter/stop-sign-twitter.png';
+  project: any = {}
   map: any;
-  constructor(private route: ActivatedRoute) {}
+
+  constructor(private route: ActivatedRoute, private backend:BackendService) {}
 
   ngOnInit() {
     this.projectId = this.route.snapshot.paramMap.get('projectId')!;
-    
-    this.map = new ol.Map({
-      target: 'map',
-      layers: [
-        new ol.layer.Tile({
-          source: new ol.source.OSM(),
-        }),
-        new ol.layer.Vector({
-          source: new ol.source.Vector({
-            features: [
-              new ol.Feature({
-                geometry: new ol.geom.Circle(
-                  ol.proj.fromLonLat([this.longitude, this.latitude]),
-                  200
-                ),
-              }),
-            ],
+    this.backend.getProjectbyId(this.projectId).subscribe ({
+      next: (res) => {
+        this.project = JSON.parse(JSON.stringify(res))
+         this.map = new ol.Map({
+          target: 'map',
+          controls: ol.control.defaults({
+            attributionOptions: {
+              collapsible: false,
+            },
           }),
-        }),
-      ],
-      view: new ol.View({
-        center: ol.proj.fromLonLat([this.longitude, this.latitude]),
-        zoom: 16,
-      }),
-    });
-    this.addPoint(
-      this.latitude + 0.00025,
-      this.longitude + 0.0008,
-      this.trafficlight,
-      0.05
-    );
-    this.addPoint(
-      this.latitude - 0.0003,
-      this.longitude + 0.00105,
-      this.stop,
-      0.1
-    );
-    this.addPoint(
-      this.latitude - 0.00035,
-      this.longitude + 0.00105,
-      this.stop,
-      0.1
-    );
+          layers: [
+            new ol.layer.Tile({
+              source: new ol.source.OSM(),
+            }),
+            new ol.layer.Vector({
+              source: new ol.source.Vector({
+                features: [
+                  new ol.Feature({
+                    geometry: new ol.geom.Circle(
+                      ol.proj.fromLonLat([+this.project.longitude, +this.project.latitude]),
+                      this.project.radius
+                    ),
+                  }),
+                ],
+              }),
+            }),
+          ],
+          view: new ol.View({
+            center: ol.proj.fromLonLat([+this.project.longitude, +this.project.latitude]),
+            zoom: 16,
+          }),
+        });
+        this.project.contraints.forEach((point: { latitude: string; longitude: string ; type: string; }) => {
+          console.log(point)
+          this.addPoint(+point.latitude, +point.longitude, point.type);
+        });
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    })
   }
-  addPoint(lat: number, lng: number, types: string, scale: number) {
+
+  
+  addPoint(lat: number, lng: number, types: string) {
     var vectorLayer = new ol.layer.Vector({
       source: new ol.source.Vector({
         features: [
@@ -81,16 +78,11 @@ export class ProjectDetailComponent implements OnInit {
           anchor: [0.5, 0.5],
           anchorXUnits: 'fraction',
           anchorYUnits: 'fraction',
-          scale: scale,
-          src: types,
+          scale: 0.055,
+          src: '/assets/' + types + '.png',
         }),
       }),
     });
     this.map.addLayer(vectorLayer);
-  }
-  setCenter() {
-    var view = this.map.getView();
-    view.setCenter(ol.proj.fromLonLat([this.longitude, this.latitude]));
-    view.setZoom(8);
   }
 }
