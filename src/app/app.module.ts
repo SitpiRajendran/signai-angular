@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { NgxGoogleAnalyticsModule, NgxGoogleAnalyticsRouterModule } from 'ngx-google-analytics';
+
 import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http'
 import { CookieService } from 'ngx-cookie-service';
@@ -40,7 +42,9 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes),
-    HttpClientModule
+    HttpClientModule,
+    NgxGoogleAnalyticsModule.forRoot('G-E7E3GFLG7G'),
+    NgxGoogleAnalyticsRouterModule
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]

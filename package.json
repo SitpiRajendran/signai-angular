@@ -20,6 +20,7 @@
     "@angular/router": "~13.1.1",
     "bulma-steps-component": "^0.5.3",
     "ngx-cookie-service": "^13.1.2",
+    "ngx-google-analytics": "^13.0.1",
     "rxjs": "~7.5.1",
     "tslib": "^2.3.1",
     "zone.js": "~0.11.4"
