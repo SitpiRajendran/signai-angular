@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BackendService } from '../backend.service';
+import { Title } from '@angular/platform-browser';
 
 declare var ol: any;
 element: HTMLElement;
@@ -27,14 +28,17 @@ export class Demande2Component implements OnInit {
   contstrainttype: string = "trafficlight";
 
   contraintList: Array<any> = [];
+  title = "Création de Projet (2/2) - Signai"
 
   constructor(
     private route: ActivatedRoute,
     private backend: BackendService,
-    private router: Router
+    private router: Router,
+    private titleService:Title
   ) {}
 
   ngOnInit() {
+    this.titleService.setTitle(this.title);
     this.name = this.route.snapshot.paramMap.get('name')!;
     this.description = this.route.snapshot.paramMap.get('description')!;
     this.postalcode = this.route.snapshot.paramMap.get('postalcode')!;

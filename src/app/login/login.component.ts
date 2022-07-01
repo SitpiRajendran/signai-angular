@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BackendService } from '../backend.service';
 import { CookieService } from 'ngx-cookie-service';
-
+import { Title } from '@angular/platform-browser';
+ 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -11,14 +12,17 @@ import { CookieService } from 'ngx-cookie-service';
 export class LoginComponent implements OnInit {
   public errormsg: string = '';
   public cookiesaccepted: boolean = false;
+  title = "Connexion - Signai"
 
   constructor(
     private router: Router,
     private backend: BackendService,
     private cookieService: CookieService,
+    private titleService:Title
   ) {}
 
   ngOnInit(): void {
+    this.titleService.setTitle(this.title);
     this.cookiesaccepted = this.cookieService.check('cookiesaccepted')
     if (this.cookieService.check('token'))
       this.router.navigate(['/dashboard'])

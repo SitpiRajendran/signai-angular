@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { BackendService } from '../backend.service';
+import { Title } from '@angular/platform-browser';
 
 declare var ol: any;
 
@@ -14,7 +15,7 @@ export class ProjectDetailComponent implements OnInit {
   project: any = {}
   map: any;
 
-  constructor(private route: ActivatedRoute, private backend:BackendService) {}
+  constructor(private route: ActivatedRoute, private backend:BackendService, private titleService:Title) {}
 
   ngOnInit() {
     this.projectId = this.route.snapshot.paramMap.get('projectId')!;
@@ -54,6 +55,8 @@ export class ProjectDetailComponent implements OnInit {
           console.log(point)
           this.addPoint(+point.latitude, +point.longitude, point.type);
         });
+      this.titleService.setTitle("Projet " + this.project.name + " - Signai")
+
       },
       error: (err) => {
         console.error(err);

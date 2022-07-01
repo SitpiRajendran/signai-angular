@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BackendService } from '../backend.service';
 import { CookieService } from 'ngx-cookie-service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-moncompte',
@@ -12,10 +13,12 @@ export class MoncompteComponent implements OnInit {
 
   public userinfo: any = [];
   public errormsg: string = "";
-
-  constructor(private router: Router, private backend:BackendService, private cookieService: CookieService,) { }
+  title = "Mon Compte - Signai"
+  constructor(private router: Router, private backend:BackendService, private cookieService: CookieService, private titleService:Title) { }
+ 
 
   ngOnInit(): void {
+    this.titleService.setTitle(this.title)
     if (!this.cookieService.check('token'))
     this.router.navigate(['/login'])
 
