@@ -15,10 +15,12 @@ import { Demande1Component } from './demande1/demande1.component';
 import { Demande2Component } from './demande2/demande2.component';
 import { NocookiesComponent } from './nocookies/nocookies.component';
 import { MoncompteComponent } from './moncompte/moncompte.component';
+import { RegisterComponent } from './register/register.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   { path: 'nocookies', component: NocookiesComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'details/:projectId', component: ProjectDetailComponent },
@@ -38,6 +40,7 @@ const routes: Routes = [
     Demande2Component,
     NocookiesComponent,
     MoncompteComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,

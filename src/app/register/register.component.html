@@ -1,0 +1,75 @@
+<div class="login-div columns">
+    <div class="column">
+        <img src="assets/logo.png"
+            style="width: 10%;  display: block; margin-left: auto; margin-right: auto; padding-top: 7%;">
+    </div>
+    <div class="column">
+        <div class="login-box pb-5 ">
+            <p
+                style="font-family: Poppins; font-size: 18px; font-style: normal; font-weight: 400; line-height: 27px; letter-spacing: 0em; text-align: center; color: #FFFFFF; padding-top: 5%; ">
+                Bienvenue</p>
+            <p
+                style="font-family: Poppins; font-size: 24px; font-style: normal; font-weight: 700; line-height: 36px; letter-spacing: 0em; text-align: center; color: #FFFFFF;">
+                Créez votre compte</p>
+            <div class="field m-3 mx-6 has-background-danger has-text-white has-text-centered "
+                style="border-radius: 5px;">
+                <p *ngIf="errormsg" class="py-1">{{errormsg}}</p>
+            </div>
+            <div class="field px-6 mt-4">
+                <label class="label has-text-white">Email</label>
+                <div class="control">
+                    <input class="input" #mail
+                        style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;"
+                        type="mail" placeholder="">
+                </div>
+            </div>
+            <div class="field px-6 mt-3">
+                <label class="label has-text-white">Mot de Passe</label>
+                <div class="control">
+                    <input class="input" #password
+                        style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;"
+                        type="password" placeholder="">
+                </div>
+            </div>
+            <div class="field px-6 mt-3">
+                <label class="label has-text-white">Confirmez votre Mot de Passe</label>
+                <div class="control">
+                    <input class="input" #password2
+                        style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;"
+                        type="password" placeholder="">
+                </div>
+            </div>
+            <div class="columns mb-0">
+            <div class="column field ml-6 mt-3 mb-0">
+                <label class="label has-text-white">Prénom</label>
+                <div class="control">
+                    <input class="input" #firstname
+                        style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;"
+                        type="text" placeholder="">
+                </div>
+            </div>
+            <div class="column field mr-6 mt-3 mb-0">
+                <label class="label has-text-white">Nom</label>
+                <div class="control">
+                    <input class="input" #name
+                        style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;"
+                        type="text" placeholder="">
+                </div>
+            </div>
+        </div>
+            <div class="field px-6 mt-3">
+                <label class="label has-text-white">Numéro de Téléphone</label>
+                <div class="control">
+                    <input class="input" #phone
+                        style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;"
+                        type="text" placeholder="">
+                </div>
+            </div>
+            <div class="control mt-4">
+                <button class="button has-text-weight-bold"
+                    style="width: 200px; margin-left: 30%; background: #2C1F81; border-radius: 5px; border-color: #2C1F81; color: white"
+                    (click)="registeruser(mail.value, password.value, password2.value, firstname.value, name.value, phone.value)">S'INSCRIRE</button>
+            </div>
+        </div>
+    </div>
+</div>

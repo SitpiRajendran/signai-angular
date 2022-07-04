@@ -22,6 +22,7 @@ export class ProjectDetailComponent implements OnInit {
     this.backend.getProjectbyId(this.projectId).subscribe ({
       next: (res) => {
         this.project = JSON.parse(JSON.stringify(res))
+        console.log(this.project)
          this.map = new ol.Map({
           target: 'map',
           controls: ol.control.defaults({
@@ -51,10 +52,22 @@ export class ProjectDetailComponent implements OnInit {
             zoom: 16,
           }),
         });
-        this.project.contraints.forEach((point: { latitude: string; longitude: string ; type: string; }) => {
-          console.log(point)
-          this.addPoint(+point.latitude, +point.longitude, point.type);
-        });
+        if (this.project.status != "finished") {
+            this.project.contraints.forEach((point: { latitude: string; longitude: string ; type: string; }) => {
+              console.log(point)
+              this.addPoint(+point.latitude, +point.longitude, point.type);
+            });
+        }
+        if (this.project.status == "finished") {
+            this.project.results.forEach((point: { coordonateX: string; coordonateY: string ; type: string; value: string}) => {
+              console.log(point)
+                if (point.type == "sign")
+                  this.addPoint(+point.coordonateX, +point.coordonateY, point.value);
+                if (point.type == "speed")
+                  this.addPoint(+point.coordonateX, +point.coordonateY, point.type);
+            });
+        }
+
       this.titleService.setTitle("Projet " + this.project.name + " - Signai")
 
       },

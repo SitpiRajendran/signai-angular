@@ -14,6 +14,7 @@ export class DashboardComponent implements OnInit {
   title = 'Dashboard - Signai';
 
   public projectlist: any = [];
+  public finishedproject: any = [];
   public errormsg: string = "";
 
   constructor(private router: Router, private backend:BackendService, private cookieService: CookieService, private titleService:Title) { }
@@ -41,7 +42,7 @@ export class DashboardComponent implements OnInit {
         this.backend.getProjectListMyCompany(company).subscribe({
           next: (res) => {
              this.projectlist = JSON.parse(JSON.stringify(res));
-
+             console.log(this.projectlist)
           },
           error: (error) => {
              console.error(error.error, error)
