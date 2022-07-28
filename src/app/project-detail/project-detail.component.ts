@@ -53,7 +53,7 @@ export class ProjectDetailComponent implements OnInit {
           }),
         });
         if (this.project.status != "finished") {
-            this.project.contraints.forEach((point: { latitude: string; longitude: string ; type: string; }) => {
+            this.project.contraints.forEach((point: { latitude: string; longitude: string ; type: string;}) => {
               console.log(point)
               this.addPoint(+point.latitude, +point.longitude, point.type);
             });
@@ -63,8 +63,11 @@ export class ProjectDetailComponent implements OnInit {
               console.log(point)
                 if (point.type == "sign")
                   this.addPoint(+point.coordonateX, +point.coordonateY, point.value);
-                if (point.type == "speed")
+                if (point.type == "speed") {
+                  var speed = Math.round(Number(point.value) * 3.6);
+                  console.log(speed)
                   this.addPoint(+point.coordonateX, +point.coordonateY, point.type);
+                }
             });
         }
 
@@ -77,7 +80,6 @@ export class ProjectDetailComponent implements OnInit {
     })
   }
 
-  
   addPoint(lat: number, lng: number, types: string) {
     var vectorLayer = new ol.layer.Vector({
       source: new ol.source.Vector({

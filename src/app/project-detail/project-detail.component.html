@@ -86,14 +86,14 @@
             <ul>
               <li *ngFor="let contraint of project.results;">
                 <p *ngIf='contraint.type == "sign" && contraint.value == "redlight"'>🚦 Feu de Signalisation à
-                  {{contraint.coordonateX.toString().slice(0,10)}}, {{contraint.coordonateY.toString().slice(0,10)}}</p>
-                <p *ngIf='contraint.type == "sign" && contraint.value == "priority_stop"'>🛑 Panneau Stop à {{contraint.coordonateX.toString().slice(0,10)}},
-                  {{contraint.coordonateY.toString().slice(0,10)}}</p>
+                  {{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</p>
+                <p *ngIf='contraint.type == "sign" && contraint.value == "priority_stop"'>🛑 Panneau Stop à {{contraint.coordonateX.toString().slice(0,7)}},
+                  {{contraint.coordonateY.toString().slice(0,7)}}</p>
                 <p *ngIf='contraint.type == "yield"'>🔻 Cédez le Passage à
-                  {{contraint.latitude.toString().slice(0,10)}}, {{contraint.longitude.toString().slice(0,10)}}</p>
+                  {{contraint.latitude.toString().slice(0,7)}}, {{contraint.longitude.toString().slice(0,7)}}</p>
                 <p *ngIf='contraint.type == "roundabout"'>🔄 Carrefour à sens giratoire à
-                  {{contraint.latitude.toString().slice(0,10)}}, {{contraint.longitude.toString().slice(0,10)}}</p>
-                <p *ngIf='contraint.type == "speed"'>🛞 Vitesse limitée à {{contraint.value}}km/h à {{contraint.coordonateX.toString().slice(0,10)}}, {{contraint.coordonateY.toString().slice(0,10)}}</p>
+                  {{contraint.latitude.toString().slice(0,7)}}, {{contraint.longitude.toString().slice(0,7)}}</p>
+                <p *ngIf='contraint.type == "speed"'>🛞 Vitesse limitée à {{(contraint.value * 3.6).toString().slice(0, 2)}}km/h à {{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</p>
   
               </li>
             </ul>
