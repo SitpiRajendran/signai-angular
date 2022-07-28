@@ -66,7 +66,7 @@ export class ProjectDetailComponent implements OnInit {
                 if (point.type == "speed") {
                   var speed = Math.round(Number(point.value) * 3.6);
                   console.log(speed)
-                  this.addPoint(+point.coordonateX, +point.coordonateY, point.type);
+                  this.addPoint(+point.coordonateX, +point.coordonateY, point.type + "_" + speed.toString());
                 }
             });
         }
