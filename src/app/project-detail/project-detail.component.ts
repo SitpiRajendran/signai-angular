@@ -61,8 +61,10 @@ export class ProjectDetailComponent implements OnInit {
         if (this.project.status == "finished") {
             this.project.results.forEach((point: { coordonateX: string; coordonateY: string ; type: string; value: string}) => {
               console.log(point)
-                if (point.type == "sign")
-                  this.addPoint(+point.coordonateX, +point.coordonateY, point.value);
+                if (point.type == "sign") {
+                  console.log(point.value);
+                  this.addPoint(+point.coordonateX, +point.coordonateY, point.type + "_" + point.value);
+                }
                 if (point.type == "speed") {
                   var speed = Math.round(Number(point.value) * 3.6);
                   console.log(speed)
