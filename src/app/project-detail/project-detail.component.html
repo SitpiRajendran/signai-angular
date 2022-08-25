@@ -97,7 +97,12 @@
                   {{contraint.latitude.toString().slice(0,7)}}, {{contraint.longitude.toString().slice(0,7)}}</p>
                 <p *ngIf='contraint.type == "roundabout"'>🔄 Carrefour à sens giratoire à
                   {{contraint.latitude.toString().slice(0,7)}}, {{contraint.longitude.toString().slice(0,7)}}</p>
-                <p *ngIf='contraint.type == "speed"'>🛞 Vitesse limitée à {{ contraint.value * 3.6 | number : '1.0-0'}}km/h à {{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</p>
+                <p *ngIf='contraint.type == "speed"'>🛞 Vitesse limitée à {{ contraint.value * 3.6 | number : '1.0-0'}}km/h à
+                  {{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</p>
+                <p *ngIf='contraint.type == "priority_up"'>🛞 Priority de la route augmenté à
+                  {{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</p>
+                <p *ngIf='contraint.type == "priority_down"'>🛞 Priority de la route baissé à
+                  {{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</p>
               </li>
             </ul>
           </div>

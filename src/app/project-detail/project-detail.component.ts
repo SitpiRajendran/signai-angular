@@ -70,6 +70,22 @@ export class ProjectDetailComponent implements OnInit {
                   console.log(speed)
                   this.addPoint(+point.coordonateX, +point.coordonateY, point.type + "_" + speed.toString());
                 }
+                if (point.type == "priority_up") {
+                  var newValue = point.value.replace(/'/g, "\"")
+                  const valueJson = JSON.parse(newValue)
+                  for (let i = 0; i < valueJson.length; i++) {
+                    this.addPoint(+valueJson[i]["coordonateX"], +valueJson[i]["coordonateY"], "priority_" + valueJson[i]["priorityValue"])
+                  }
+                  this.addPoint(+point.coordonateX, +point.coordonateY, point.type);
+                }
+                if (point.type == "priority_down") {
+                  var newValue = point.value.replace(/'/g, "\"")
+                  const valueJson = JSON.parse(newValue)
+                  for (let i = 0; i < valueJson.length; i++) {
+                    this.addPoint(+valueJson[i]["coordonateX"], +valueJson[i]["coordonateY"], "priority_" + valueJson[i]["priorityValue"])
+                  }
+                  this.addPoint(+point.coordonateX, +point.coordonateY, point.type);
+                }
             });
         }
 
@@ -83,26 +99,27 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   addPoint(lat: number, lng: number, types: string) {
+    console.log(types)
     var vectorLayer = new ol.layer.Vector({
-      source: new ol.source.Vector({
-        features: [
-          new ol.Feature({
-            geometry: new ol.geom.Point(
-              ol.proj.transform([lng, lat], 'EPSG:4326', 'EPSG:3857')
-            ),
-          }),
-        ],
-      }),
-      style: new ol.style.Style({
-        image: new ol.style.Icon({
-          anchor: [0.5, 0.5],
-          anchorXUnits: 'fraction',
-          anchorYUnits: 'fraction',
-          scale: 0.055,
-          src: '/assets/' + types + '.png',
+        source: new ol.source.Vector({
+          features: [
+            new ol.Feature({
+              geometry: new ol.geom.Point(
+                ol.proj.transform([lng, lat], 'EPSG:4326', 'EPSG:3857')
+              ),
+            }),
+          ],
         }),
-      }),
-    });
+        style: new ol.style.Style({
+          image: new ol.style.Icon({
+            anchor: [0.5, 0.5],
+            anchorXUnits: 'fraction',
+            anchorYUnits: 'fraction',
+            scale: (types == "priority_1" || types == "priority_2" || types == "priority_3" || types == "priority_4" || types == "priority_5") ? 0.030: 0.055,
+            src: '/assets/' + types + '.png',
+          }),
+        }),
+      });
     this.map.addLayer(vectorLayer);
   }
 }
