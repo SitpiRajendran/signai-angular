@@ -74,18 +74,33 @@ export class ProjectDetailComponent implements OnInit {
                   var newValue = point.value.replace(/'/g, "\"")
                   const valueJson = JSON.parse(newValue)
                   for (let i = 0; i < valueJson.length; i++) {
-                    this.addPoint(+valueJson[i]["coordonateX"], +valueJson[i]["coordonateY"], "priority_" + valueJson[i]["priorityValue"])
+                    this.addPoint(+valueJson["edgesPriority"][i]["coordonateX"], +valueJson["edgesPriority"][i]["coordonateY"], "priority_" + valueJson["edgesPriority"][i]["priorityValue"])
                   }
                   this.addPoint(+point.coordonateX, +point.coordonateY, point.type);
                 }
                 if (point.type == "priority_down") {
                   var newValue = point.value.replace(/'/g, "\"")
                   const valueJson = JSON.parse(newValue)
-                  for (let i = 0; i < valueJson.length; i++) {
-                    this.addPoint(+valueJson[i]["coordonateX"], +valueJson[i]["coordonateY"], "priority_" + valueJson[i]["priorityValue"])
+                  for (let i = 0; i < valueJson["edgesPriority"].length; i++) {
+                    this.addPoint(+valueJson["edgesPriority"][i]["coordonateX"], +valueJson["edgesPriority"][i]["coordonateY"], "priority_" + valueJson["edgesPriority"][i]["priorityValue"])
                   }
+                  this.addPoint(+Number(valueJson["nodeCooX"]), +Number(valueJson["nodeCooY"]), "intersection")
                   this.addPoint(+point.coordonateX, +point.coordonateY, point.type);
                 }
+              if (point.type == "traffic_light") {
+                var newValue = point.value.replace(/'/g, "\"")
+                var valueJson = JSON.parse(newValue)
+                console.log(valueJson)
+                point.value = valueJson;
+                for (let i = 0; i < valueJson["sortedNode"].length; i++) {
+                  this.addPoint(+valueJson["sortedNode"][i]["closePoint"]["x"], +valueJson["sortedNode"][i]["closePoint"]["y"], "priority_" + String(i + 1))
+                }
+                // for (let i = 0; i < valueJson["newTlCycle"].length; i++) {
+                //   valueJson["newTlCycle"]["i"]["dispBool"] = 0;
+                // }
+                // console.log(valueJson["newTlCycle"])
+                this.addPoint(+point.coordonateX, +point.coordonateY, "trafficlight");
+              }
             });
         }
 
@@ -121,5 +136,15 @@ export class ProjectDetailComponent implements OnInit {
         }),
       });
     this.map.addLayer(vectorLayer);
+  }
+
+  zoomToPoint(lat: number, lng: number) {
+    var features = new ol.Feature({
+      geometry: new ol.geom.Point(
+        ol.proj.transform([lng, lat], 'EPSG:4326', 'EPSG:3857')
+      ),
+    });
+    this.map.getView().fit(features.getGeometry(), this.map.getSize());
+    this.map.getView().setZoom(18);
   }
 }
