@@ -105,7 +105,12 @@
                   {{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</p>
                 <p *ngIf='contraint.type == "traffic_light"' >🛞 Changement des cycles du feux à
                   <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</a>
-                  <li *ngFor="let cycle of contraint.value['newTlCycle']" tabindex="1">cycle numéro {{cycle["cycleNb"]}}, durée : {{cycle["duration"]}} secondes</li>
+                  <li *ngFor="let cycle of contraint.value['newTlCycle']" style="margin-left: 5%;" >cycle numéro {{cycle["cycleNb"]}}, durée : {{cycle["duration"]}} secondes. <a (click)="changeCycle(cycle['cycleNb'])" > {{cycle["dispBool"] == 0 ? 'open' : 'close'}}</a>
+                    <p *ngIf="cycle['dispBool']">
+                    <li *ngFor="let direction of cycle['detail']" style="margin-left: 5%">De la route {{direction["fromNode"]}} à la route {{direction["toNode"]}}
+                    <span style="height: 25px; width: 25px; border-radius: 50%; display: inline-block" [style.background]="direction['color'] == 'vert' ? 'green' : 'yellow'"></span></li>
+                    </p>
+                  </li>
                 </p>
               </li>
             </ul>
