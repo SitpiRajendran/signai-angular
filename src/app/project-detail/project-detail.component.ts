@@ -74,9 +74,10 @@ export class ProjectDetailComponent implements OnInit {
                 if (point.type == "priority_up") {
                   var newValue = point.value.replace(/'/g, "\"")
                   const valueJson = JSON.parse(newValue)
-                  for (let i = 0; i < valueJson.length; i++) {
+                  for (let i = 0; i < valueJson["edgesPriority"].length; i++) {
                     this.addPoint(+valueJson["edgesPriority"][i]["coordonateX"], +valueJson["edgesPriority"][i]["coordonateY"], "priority_" + valueJson["edgesPriority"][i]["priorityValue"])
                   }
+                  this.addPoint(+Number(valueJson["nodeCooX"]), +Number(valueJson["nodeCooY"]), "intersection")
                   this.addPoint(+point.coordonateX, +point.coordonateY, point.type);
                 }
                 if (point.type == "priority_down") {
