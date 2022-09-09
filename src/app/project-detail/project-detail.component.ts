@@ -14,6 +14,7 @@ export class ProjectDetailComponent implements OnInit {
   projectId: string = '';
   project: any = {}
   map: any;
+  valueJson: any;
 
   constructor(private route: ActivatedRoute, private backend:BackendService, private titleService:Title) {}
 
@@ -53,7 +54,7 @@ export class ProjectDetailComponent implements OnInit {
           }),
         });
         if (this.project.status != "finished") {
-            this.project.contraints.forEach((point: { latitude: string; longitude: string ; type: string; }) => {
+            this.project.contraints.forEach((point: { latitude: string; longitude: string ; type: string;}) => {
               console.log(point)
               this.addPoint(+point.latitude, +point.longitude, point.type);
             });
@@ -61,10 +62,47 @@ export class ProjectDetailComponent implements OnInit {
         if (this.project.status == "finished") {
             this.project.results.forEach((point: { coordonateX: string; coordonateY: string ; type: string; value: string}) => {
               console.log(point)
-                if (point.type == "sign")
-                  this.addPoint(+point.coordonateX, +point.coordonateY, point.value);
-                if (point.type == "speed")
+                if (point.type == "sign") {
+                  console.log(point.value);
+                  this.addPoint(+point.coordonateX, +point.coordonateY, point.type + "_" + point.value);
+                }
+                if (point.type == "speed") {
+                  var speed = Math.round(Number(point.value) * 3.6);
+                  console.log(speed)
+                  this.addPoint(+point.coordonateX, +point.coordonateY, point.type + "_" + speed.toString());
+                }
+                if (point.type == "priority_up") {
+                  var newValue = point.value.replace(/'/g, "\"")
+                  const valueJson = JSON.parse(newValue)
+                  for (let i = 0; i < valueJson["edgesPriority"].length; i++) {
+                    this.addPoint(+valueJson["edgesPriority"][i]["coordonateX"], +valueJson["edgesPriority"][i]["coordonateY"], "priority_" + valueJson["edgesPriority"][i]["priorityValue"])
+                  }
+                  this.addPoint(+Number(valueJson["nodeCooX"]), +Number(valueJson["nodeCooY"]), "intersection")
                   this.addPoint(+point.coordonateX, +point.coordonateY, point.type);
+                }
+                if (point.type == "priority_down") {
+                  var newValue = point.value.replace(/'/g, "\"")
+                  const valueJson = JSON.parse(newValue)
+                  for (let i = 0; i < valueJson["edgesPriority"].length; i++) {
+                    this.addPoint(+valueJson["edgesPriority"][i]["coordonateX"], +valueJson["edgesPriority"][i]["coordonateY"], "priority_" + valueJson["edgesPriority"][i]["priorityValue"])
+                  }
+                  this.addPoint(+Number(valueJson["nodeCooX"]), +Number(valueJson["nodeCooY"]), "intersection")
+                  this.addPoint(+point.coordonateX, +point.coordonateY, point.type);
+                }
+              if (point.type == "traffic_light") {
+                var newValue = point.value.replace(/'/g, "\"")
+                var valueJson = JSON.parse(newValue)
+                console.log(valueJson)
+                point.value = valueJson;
+                for (let i = 0; i < valueJson["sortedNode"].length; i++) {
+                  this.addPoint(+valueJson["sortedNode"][i]["closePoint"]["x"], +valueJson["sortedNode"][i]["closePoint"]["y"], "priority_" + String(i + 1))
+                }
+                for (let i = 0; i < valueJson["newTlCycle"].length; i++) {
+                  valueJson["newTlCycle"][i]["dispBool"] = 0;
+                }
+                this.valueJson = valueJson;
+                this.addPoint(+point.coordonateX, +point.coordonateY, "trafficlight");
+              }
             });
         }
 
@@ -77,28 +115,49 @@ export class ProjectDetailComponent implements OnInit {
     })
   }
 
-  
   addPoint(lat: number, lng: number, types: string) {
+    console.log(types)
     var vectorLayer = new ol.layer.Vector({
-      source: new ol.source.Vector({
-        features: [
-          new ol.Feature({
-            geometry: new ol.geom.Point(
-              ol.proj.transform([lng, lat], 'EPSG:4326', 'EPSG:3857')
-            ),
-          }),
-        ],
-      }),
-      style: new ol.style.Style({
-        image: new ol.style.Icon({
-          anchor: [0.5, 0.5],
-          anchorXUnits: 'fraction',
-          anchorYUnits: 'fraction',
-          scale: 0.055,
-          src: '/assets/' + types + '.png',
+        source: new ol.source.Vector({
+          features: [
+            new ol.Feature({
+              geometry: new ol.geom.Point(
+                ol.proj.transform([lng, lat], 'EPSG:4326', 'EPSG:3857')
+              ),
+            }),
+          ],
         }),
-      }),
-    });
+        style: new ol.style.Style({
+          image: new ol.style.Icon({
+            anchor: [0.5, 0.5],
+            anchorXUnits: 'fraction',
+            anchorYUnits: 'fraction',
+            scale: (types == "priority_1" || types == "priority_2" || types == "priority_3" || types == "priority_4" || types == "priority_5") ? 0.030: 0.055,
+            src: '/assets/' + types + '.png',
+          }),
+        }),
+      });
     this.map.addLayer(vectorLayer);
+  }
+
+  zoomToPoint(lat: number, lng: number) {
+    var features = new ol.Feature({
+      geometry: new ol.geom.Point(
+        ol.proj.transform([lng, lat], 'EPSG:4326', 'EPSG:3857')
+      ),
+    });
+    this.map.getView().fit(features.getGeometry(), this.map.getSize());
+    this.map.getView().setZoom(18);
+  }
+
+  changeCycle(cycleNB: Number) {
+    for (let i = 0; i < this.valueJson["newTlCycle"].length; i++) {
+      if (this.valueJson["newTlCycle"][i]["cycleNb"] == cycleNB) {
+        if (this.valueJson["newTlCycle"][i]["dispBool"] == 1)
+          this.valueJson["newTlCycle"][i]["dispBool"] = 0
+        else
+          this.valueJson["newTlCycle"][i]["dispBool"] = 1
+      }
+    }
   }
 }
