@@ -9,7 +9,7 @@ import { CookieService } from 'ngx-cookie-service';
 
 export class BackendService {
 
-    public BACKEND_URL = "https://signai.herokuapp.com";
+    public BACKEND_URL = "http://localhost:3001";
     //"http://localhost:3001/"
     constructor(private http: HttpClient, private cookieService: CookieService) { }
 
@@ -94,6 +94,22 @@ export class BackendService {
             city +
             '&format=json'
         );
+    }
+
+    getGraphicsTrip(projectID: string) {
+        let token = 'Bearer ' + this.cookieService.get('token');
+        return this.http.get(
+            this.BACKEND_URL + '/graphic/trip/' + projectID,
+            {headers: new HttpHeaders({ authorization: token })
+        });
+    }
+
+    getGraphicsRoad(projectID: string) {
+        let token = 'Bearer ' + this.cookieService.get('token');
+        return this.http.get(
+            this.BACKEND_URL + '/graphic/road/' + projectID,
+            {headers: new HttpHeaders({ authorization: token })
+        });
     }
 
 }
