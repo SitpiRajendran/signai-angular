@@ -10,12 +10,12 @@
                         style="width: 200px; background: white; border-radius: 5px;  color: black">+ Demande de
                         Projet</button></a>
             </div>
-            <div class="sub-box mx-2 mt-2">
+            <div class="sub-box ml-2 mr-6 mt-2">
                 <p class="subtitle is-5 has-text-white px-6">Mes projets en cours</p>
                 <div class="columns is-multiline pl-6 ml-1">
-                    <div *ngFor="let project of projectlist" class="column is-2">
+                    <div *ngFor="let project of projectlist" class="column is-3">
                         <div
-                            style="background: conic-gradient(from 180deg at 50% 50%, rgba(255, 0, 0, 0) -0.31deg, #c0bd00 0.74deg, rgba(255, 0, 0, 0) 359.69deg, #bbff00 360.74deg), #ff3c00; border-radius: 14px;">
+                            style="background: conic-gradient(from 180deg at 50% 50%, rgba(255, 0, 0, 0) -0.31deg, #c0bd00 0.74deg, rgba(255, 0, 0, 0) 359.69deg, #bbff00 360.74deg), #ff3c00; border-radius: 14px;" class="p-3">
                             <a *ngIf="project.status != 'finished'" class="mb-3 is-clickable "
                                 href="/details/{{project._id}}">
                                 <p class="title is-6 pt-2" style="text-align: center; color: #FFFFFF;">
@@ -29,7 +29,7 @@
                     <p *ngIf="projectlist.length == 0">Aucun projet en cours</p>
                 </div>
             </div>
-            <div class="sub-box mx-2 mt-6">
+            <div class="sub-box ml-2 mr-6 mt-6">
                 <p class="subtitle is-5 has-text-white px-6">Mes projets terminées</p>
 <!--                 <div class="columns is-multiline pl-6 ml-1">
                     <div class="column is-2 mr-5 mb-3"
@@ -52,16 +52,20 @@
                     </div>
                 </div> -->
                 <div class="columns is-multiline pl-6 ml-1">
-                    <div *ngFor="let project of projectlist" class="column is-2"
-                        style="background: conic-gradient(from 180deg at 50% 50%, rgba(255, 0, 0, 0) -0.31deg, #c0bd00 0.74deg, rgba(255, 0, 0, 0) 359.69deg, #bbff00 360.74deg), #ff3c00; border-radius: 14px;">
-                        <a *ngIf="project.status == 'finished'" class="mb-3 is-clickable "
+                    <div *ngFor="let project of finishedproject" class="column is-3">
+                        <div
+                        style="background: conic-gradient(from 180deg at 50% 50%, rgba(255, 0, 0, 0) -0.31deg, #4d00c0 0.74deg, rgba(255, 0, 0, 0) 359.69deg, #ff0095 360.74deg), #ff0090; border-radius: 14px;" class="p-3">
+                        <a class="mb-3 is-clickable "
                             href="/details/{{project._id}}">
                             <p class="title is-6 pt-2" style="text-align: center; color: #FFFFFF;">
                                 {{project.name}}</p>
                             <div style="display: flex;justify-content: space-between; ">
                                 <p class="has-text-white is-size-8">{{project.createdAt.slice(0,10)}}</p>
+                                <p class="has-text-white is-size-8">{{project.updatedAt.slice(0,10)}}</p>
                             </div>
                         </a>
+                    </div>
+                    </div>
                     </div>
                     <p *ngIf="projectlist.length == 0">Aucun projet en cours</p>
                 </div>
