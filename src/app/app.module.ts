@@ -16,6 +16,7 @@ import { Demande2Component } from './demande2/demande2.component';
 import { NocookiesComponent } from './nocookies/nocookies.component';
 import { MoncompteComponent } from './moncompte/moncompte.component';
 import { RegisterComponent } from './register/register.component';
+import { DisconnectComponent } from './disconnect/disconnect.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -27,6 +28,7 @@ const routes: Routes = [
   { path: 'demande1', component: Demande1Component },
   { path: 'demande2', component: Demande2Component },
   { path: 'moncompte', component: MoncompteComponent },
+  { path: 'disconnect', component: DisconnectComponent },
 ];
 
 @NgModule({
@@ -41,6 +43,7 @@ const routes: Routes = [
     NocookiesComponent,
     MoncompteComponent,
     RegisterComponent,
+    DisconnectComponent,
   ],
   imports: [
     BrowserModule,

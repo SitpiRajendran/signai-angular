@@ -16,6 +16,7 @@ export class ProjectDetailComponent implements OnInit {
   map: any;
   graphicTrip: string = '';
   graphicRoad: string = '';
+  valueJson: any;
 
   constructor(private route: ActivatedRoute, private backend:BackendService, private titleService:Title) {}
 
@@ -70,9 +71,10 @@ export class ProjectDetailComponent implements OnInit {
                 if (point.type == "priority_up") {
                   var newValue = point.value.replace(/'/g, "\"")
                   const valueJson = JSON.parse(newValue)
-                  for (let i = 0; i < valueJson.length; i++) {
+                  for (let i = 0; i < valueJson["edgesPriority"].length; i++) {
                     this.addPoint(+valueJson["edgesPriority"][i]["coordonateX"], +valueJson["edgesPriority"][i]["coordonateY"], "priority_" + valueJson["edgesPriority"][i]["priorityValue"])
                   }
+                  this.addPoint(+Number(valueJson["nodeCooX"]), +Number(valueJson["nodeCooY"]), "intersection")
                   this.addPoint(+point.coordonateX, +point.coordonateY, point.type);
                 }
                 if (point.type == "priority_down") {
@@ -91,10 +93,10 @@ export class ProjectDetailComponent implements OnInit {
                 for (let i = 0; i < valueJson["sortedNode"].length; i++) {
                   this.addPoint(+valueJson["sortedNode"][i]["closePoint"]["x"], +valueJson["sortedNode"][i]["closePoint"]["y"], "priority_" + String(i + 1))
                 }
-                // for (let i = 0; i < valueJson["newTlCycle"].length; i++) {
-                //   valueJson["newTlCycle"]["i"]["dispBool"] = 0;
-                // }
-                // console.log(valueJson["newTlCycle"])
+                for (let i = 0; i < valueJson["newTlCycle"].length; i++) {
+                  valueJson["newTlCycle"][i]["dispBool"] = 0;
+                }
+                this.valueJson = valueJson;
                 this.addPoint(+point.coordonateX, +point.coordonateY, "trafficlight");
               }
             });
@@ -167,5 +169,16 @@ export class ProjectDetailComponent implements OnInit {
         console.error(err);
       }
     });
+  }
+
+  changeCycle(cycleNB: Number) {
+    for (let i = 0; i < this.valueJson["newTlCycle"].length; i++) {
+      if (this.valueJson["newTlCycle"][i]["cycleNb"] == cycleNB) {
+        if (this.valueJson["newTlCycle"][i]["dispBool"] == 1)
+          this.valueJson["newTlCycle"][i]["dispBool"] = 0
+        else
+          this.valueJson["newTlCycle"][i]["dispBool"] = 1
+      }
+    }
   }
 }

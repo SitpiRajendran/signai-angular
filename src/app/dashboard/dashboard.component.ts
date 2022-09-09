@@ -13,6 +13,7 @@ export class DashboardComponent implements OnInit {
 
   title = 'Dashboard - Signai';
 
+  public projectlisttemp: any = [];
   public projectlist: any = [];
   public finishedproject: any = [];
   public errormsg: string = "";
@@ -32,7 +33,7 @@ export class DashboardComponent implements OnInit {
         if (type == 'admin') {
         this.backend.getProjectList().subscribe({
           next: (res) => {
-             this.projectlist = JSON.parse(JSON.stringify(res));
+             this.projectlisttemp = JSON.parse(JSON.stringify(res));
           },
           error: (error) => {
              console.error(error.error, error)
@@ -41,8 +42,16 @@ export class DashboardComponent implements OnInit {
         }
         this.backend.getProjectListMyCompany(company).subscribe({
           next: (res) => {
-             this.projectlist = JSON.parse(JSON.stringify(res));
-             console.log(this.projectlist)
+             this.projectlisttemp = JSON.parse(JSON.stringify(res));
+             this.projectlisttemp.forEach((i: { status: string; }) => {
+                if (i.status != 'finished')
+                    this.projectlist.push(i)
+                else {
+                    this.finishedproject.push(i)
+                    console.error(i)
+                }
+             });
+             console.error(this.finishedproject)
           },
           error: (error) => {
              console.error(error.error, error)
