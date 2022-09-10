@@ -14,6 +14,8 @@ export class ProjectDetailComponent implements OnInit {
   projectId: string = '';
   project: any = {}
   map: any;
+  graphicTrip: string = '';
+  graphicRoad: string = '';
   valueJson: any;
 
   constructor(private route: ActivatedRoute, private backend:BackendService, private titleService:Title) {}
@@ -23,7 +25,6 @@ export class ProjectDetailComponent implements OnInit {
     this.backend.getProjectbyId(this.projectId).subscribe ({
       next: (res) => {
         this.project = JSON.parse(JSON.stringify(res))
-        console.log(this.project)
          this.map = new ol.Map({
           target: 'map',
           controls: ol.control.defaults({
@@ -55,7 +56,6 @@ export class ProjectDetailComponent implements OnInit {
         });
         if (this.project.status != "finished") {
             this.project.contraints.forEach((point: { latitude: string; longitude: string ; type: string;}) => {
-              console.log(point)
               this.addPoint(+point.latitude, +point.longitude, point.type);
             });
         }
@@ -89,7 +89,6 @@ export class ProjectDetailComponent implements OnInit {
               if (point.type == "traffic_light") {
                 var newValue = point.value.replace(/'/g, "\"")
                 var valueJson = JSON.parse(newValue)
-                console.log(valueJson)
                 point.value = valueJson;
                 for (let i = 0; i < valueJson["sortedNode"].length; i++) {
                   this.addPoint(+valueJson["sortedNode"][i]["closePoint"]["x"], +valueJson["sortedNode"][i]["closePoint"]["y"], "priority_" + String(i + 1))
@@ -101,6 +100,8 @@ export class ProjectDetailComponent implements OnInit {
                 this.addPoint(+point.coordonateX, +point.coordonateY, "trafficlight");
               }
             });
+            this.getGraphicTrip();
+            this.getGraphicRoad();
         }
       this.titleService.setTitle("Projet " + this.project.name + " - Signai")
 
@@ -218,6 +219,30 @@ export class ProjectDetailComponent implements OnInit {
     });
     this.map.getView().fit(features.getGeometry(), this.map.getSize());
     this.map.getView().setZoom(18);
+  }
+
+  getGraphicTrip() {
+    this.backend.getGraphicsTrip(this.projectId).subscribe({
+      next: (res) => {
+        let data = JSON.parse(JSON.stringify(res))
+        this.graphicTrip = "data:image/png;base64," + data.data;
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
+
+  getGraphicRoad() {
+    this.backend.getGraphicsRoad(this.projectId).subscribe({
+      next: (res) => {
+        let data = JSON.parse(JSON.stringify(res))
+        this.graphicRoad = "data:image/png;base64," + data.data;
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
   }
 
   changeCycle(cycleNB: Number) {

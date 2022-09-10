@@ -96,4 +96,20 @@ export class BackendService {
         );
     }
 
+    getGraphicsTrip(projectID: string) {
+        let token = 'Bearer ' + this.cookieService.get('token');
+        return this.http.get(
+            this.BACKEND_URL + '/graphic/trip/' + projectID,
+            {headers: new HttpHeaders({ authorization: token })
+        });
+    }
+
+    getGraphicsRoad(projectID: string) {
+        let token = 'Bearer ' + this.cookieService.get('token');
+        return this.http.get(
+            this.BACKEND_URL + '/graphic/road/' + projectID,
+            {headers: new HttpHeaders({ authorization: token })
+        });
+    }
+
 }
