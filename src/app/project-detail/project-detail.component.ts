@@ -61,14 +61,11 @@ export class ProjectDetailComponent implements OnInit {
         }
         if (this.project.status == "finished") {
             this.project.results.forEach((point: { coordonateX: string; coordonateY: string ; type: string; value: string}) => {
-              console.log(point)
                 if (point.type == "sign") {
-                  console.log(point.value);
                   this.addPoint(+point.coordonateX, +point.coordonateY, point.type + "_" + point.value);
                 }
                 if (point.type == "speed") {
                   var speed = Math.round(Number(point.value) * 3.6);
-                  console.log(speed)
                   this.addPoint(+point.coordonateX, +point.coordonateY, point.type + "_" + speed.toString());
                 }
                 if (point.type == "priority_up") {
@@ -105,7 +102,6 @@ export class ProjectDetailComponent implements OnInit {
               }
             });
         }
-
       this.titleService.setTitle("Projet " + this.project.name + " - Signai")
 
       },
@@ -116,7 +112,6 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   addPoint(lat: number, lng: number, types: string) {
-    console.log(types)
     var vectorLayer = new ol.layer.Vector({
         source: new ol.source.Vector({
           features: [
@@ -136,8 +131,83 @@ export class ProjectDetailComponent implements OnInit {
             src: '/assets/' + types + '.png',
           }),
         }),
+        name: "Point",
       });
     this.map.addLayer(vectorLayer);
+  }
+
+  getArrow(start_point: [Number, Number], end_point: [Number, Number]) {
+    var lonlat = ol.proj.fromLonLat(start_point);
+    var location2 = ol.proj.fromLonLat(end_point);
+
+    var layers = this.map.getLayers().getArray();
+
+    for (var i = 0; i < layers.length; i++) {
+      if (layers[i].get("name") == "Line") {
+        var features = layers[i].getSource().getFeatures();
+        if (features != undefined) {
+          for (var y = 0; y < features.length; y++) {
+            if (features[y].get("name") == "Line") {
+              var checkGeo = new ol.geom.LineString([lonlat, location2]).getCoordinates();
+              var lineCoordinates = features[y].get("geometry").getCoordinates();
+              if (checkGeo[0][0] == lineCoordinates[0][0] &&
+                  checkGeo[0][1] == lineCoordinates[0][1] &&
+                  checkGeo[1][0] == lineCoordinates[1][0] &&
+                  checkGeo[1][1] == lineCoordinates[1][1]) {
+                this.map.removeLayer(layers[i]);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+//48.81194964385293, 2.3580470351683513
+//48.81218663109931, 2.3582274278502777
+  addArrow(start_point: [Number, Number], end_point: [Number, Number], color: String) {
+    var location1 = ol.proj.fromLonLat(start_point);
+    var location2 = ol.proj.fromLonLat(end_point);
+
+    const dx = Number(end_point[0]) - Number(start_point[0]);
+    const dy = Number(end_point[1]) - Number(start_point[1]);
+    const rotation = Math.atan2(dy, dx);
+
+    const styles = [
+      new ol.style.Style({
+        stroke: new ol.style.Stroke({
+          color: color == "vert" ? "green": "yellow",
+          width: 2,
+        }),
+      }),
+    ];
+
+    styles.push(new ol.style.Style({
+      geometry: new ol.geom.Point(ol.proj.transform(end_point, 'EPSG:4326', 'EPSG:3857')),
+      image: new ol.style.Icon({
+        src: '/assets/arrow.png',
+        anchor: [0.75, 0.5],
+        scale: 1,
+        anchorXUnits: 'fraction',
+        anchorYUnits: 'fraction',
+        rotateWithView: true,
+        rotation: -rotation,
+        color: color == "vert" ? "green": "yellow",
+      }),
+    }))
+
+    var linie = new ol.layer.Vector({
+      source: new ol.source.Vector({
+        features: [new ol.Feature({
+            geometry: new ol.geom.LineString([location1, location2]),
+            name: 'Line',
+        })]
+      }),
+      name: "Line",
+    });
+
+    linie.setStyle(styles)
+
+    this.map.addLayer(linie);
   }
 
   zoomToPoint(lat: number, lng: number) {
@@ -153,10 +223,43 @@ export class ProjectDetailComponent implements OnInit {
   changeCycle(cycleNB: Number) {
     for (let i = 0; i < this.valueJson["newTlCycle"].length; i++) {
       if (this.valueJson["newTlCycle"][i]["cycleNb"] == cycleNB) {
-        if (this.valueJson["newTlCycle"][i]["dispBool"] == 1)
+        console.log(this.valueJson["newTlCycle"][i])
+        if (this.valueJson["newTlCycle"][i]["dispBool"] == 1) {
           this.valueJson["newTlCycle"][i]["dispBool"] = 0
-        else
+          for (let y = 0; y < this.valueJson["newTlCycle"][i]["detail"].length; y++) {
+            var fromNodeY = Number(this.valueJson["newTlCycle"][i]["detail"][y]["fromNodeY"])
+            var fromNodeX = Number(this.valueJson["newTlCycle"][i]["detail"][y]["fromNodeX"])
+            var toNodeY = Number(this.valueJson["newTlCycle"][i]["detail"][y]["toNodeY"])
+            var toNodeX = Number(this.valueJson["newTlCycle"][i]["detail"][y]["toNodeX"])
+
+            this.getArrow([fromNodeY, fromNodeX], [toNodeY, toNodeX])
+          }
+        }
+        else {
+          this.closeAllCycle()
           this.valueJson["newTlCycle"][i]["dispBool"] = 1
+          for (let y = 0; y < this.valueJson["newTlCycle"][i]["detail"].length; y++) {
+            var fromNodeY = Number(this.valueJson["newTlCycle"][i]["detail"][y]["fromNodeY"])
+            var fromNodeX = Number(this.valueJson["newTlCycle"][i]["detail"][y]["fromNodeX"])
+            var toNodeY = Number(this.valueJson["newTlCycle"][i]["detail"][y]["toNodeY"])
+            var toNodeX = Number(this.valueJson["newTlCycle"][i]["detail"][y]["toNodeX"])
+
+            this.addArrow([fromNodeY, fromNodeX], [toNodeY, toNodeX], this.valueJson["newTlCycle"][i]["detail"][y]["color"])
+          }
+        }
+      }
+    }
+  }
+  closeAllCycle() {
+    for (let i = 0; i < this.valueJson["newTlCycle"].length; i++) {
+      this.valueJson["newTlCycle"][i]["dispBool"] = 0
+      for (let y = 0; y < this.valueJson["newTlCycle"][i]["detail"].length; y++) {
+        var fromNodeY = Number(this.valueJson["newTlCycle"][i]["detail"][y]["fromNodeY"])
+        var fromNodeX = Number(this.valueJson["newTlCycle"][i]["detail"][y]["fromNodeX"])
+        var toNodeY = Number(this.valueJson["newTlCycle"][i]["detail"][y]["toNodeY"])
+        var toNodeX = Number(this.valueJson["newTlCycle"][i]["detail"][y]["toNodeX"])
+
+        this.getArrow([fromNodeY, fromNodeX], [toNodeY, toNodeX])
       }
     }
   }
