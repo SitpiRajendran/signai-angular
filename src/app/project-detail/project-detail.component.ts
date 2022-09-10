@@ -163,8 +163,6 @@ export class ProjectDetailComponent implements OnInit {
       }
     }
   }
-//48.81194964385293, 2.3580470351683513
-//48.81218663109931, 2.3582274278502777
   addArrow(start_point: [Number, Number], end_point: [Number, Number], color: String) {
     var location1 = ol.proj.fromLonLat(start_point);
     var location2 = ol.proj.fromLonLat(end_point);
