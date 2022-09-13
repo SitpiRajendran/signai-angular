@@ -17,6 +17,7 @@
                                 <option value="stop">🛑 Panneau Stop</option>
                                 <option value="yield">🔻 Cédez le Passage</option>
                                 <option value="roundabout">🔄 Carrefour à sens giratoire</option>
+                                <option value="speed">⭕️ Vitesse</option>
                             </select>
                         </div>
                     </div>
@@ -55,7 +56,13 @@
                                     type="number" placeholder="" id="contstraintdesc-rouge">
                             </div>
                         </div>
-                        <div class="control" *ngIf="contstrainttype != 'trafficlight'">
+                        <div class="control" *ngIf="contstrainttype == 'speed'">
+                            <p class="has-text-white pb-1">Vitesse maximale (en km/h)</p>
+                            <input class="input"
+                                style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;"
+                                type="textarea" placeholder="" id="contstraintspeed">
+                        </div>
+                        <div class="control" *ngIf="contstrainttype != 'trafficlight' && contstrainttype != 'speed'">
                             <input class="input"
                                 style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;"
                                 type="textarea" placeholder="" id="contstraintdesc">

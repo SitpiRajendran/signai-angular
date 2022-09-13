@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BackendService } from '../backend.service';
 import { Title } from '@angular/platform-browser';
+import { cp } from 'fs';
 
 declare var ol: any;
 element: HTMLElement;
@@ -127,6 +128,10 @@ export class Demande2Component implements OnInit {
         document.getElementById('contstraintdesc-rouge')
       )).value;
       description = vert + '/' + orange + '/' + rouge;
+    } else if (type == "speed") {
+      description = (<HTMLInputElement>(
+        document.getElementById('contstraintspeed')
+      )).value;
     } else {
       description = (<HTMLInputElement>(
         document.getElementById('contstraintdesc')
