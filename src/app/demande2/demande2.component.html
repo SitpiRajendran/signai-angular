@@ -9,6 +9,18 @@
                 <div class="column is-6">
                     <p class="title is-4 has-text-white pt-6 pl-6">Demande de Projet - {{this.name}}</p>
                     <div class="field px-6 mt-4">
+                        <label class="label has-text-white">Nouveau rayon d'action</label>
+                        <div class="control">
+                            <input class="input"
+                                style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;"
+                                type="number" placeholder="" min="20"
+                                max="1000" required #radius>
+                        </div>
+                        <button class="button has-text-weight-bold"
+                                style="width: 250px; background: white; border-radius: 5px; border-color:white; color: #22252C; margin-left: 50%; margin-top: 1%"
+                                (click)="changeRadius(radius.value)">Changer le rayon d'action</button>
+                    </div>
+                    <div class="field px-6 mt-4">
                         <label class="label has-text-white">Types de Contraintes</label>
                         <div class="select is-fullwidth">
                             <select id="contstrainttype"

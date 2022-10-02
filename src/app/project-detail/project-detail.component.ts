@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { BackendService } from '../backend.service';
 import { Title } from '@angular/platform-browser';
+import { range } from 'rxjs';
 
 declare var ol: any;
 
@@ -17,10 +18,14 @@ export class ProjectDetailComponent implements OnInit {
   graphicTrip: string = '';
   graphicRoad: string = '';
   valueJson: any;
+  layerId: number = 0;
+  constraints: any = {};
 
   constructor(private route: ActivatedRoute, private backend:BackendService, private titleService:Title) {}
 
   ngOnInit() {
+    this.constraints.displayed = false;
+    this.constraints.id = [];
     this.projectId = this.route.snapshot.paramMap.get('projectId')!;
     this.backend.getProjectbyId(this.projectId).subscribe ({
       next: (res) => {
@@ -54,11 +59,6 @@ export class ProjectDetailComponent implements OnInit {
             zoom: 16,
           }),
         });
-        if (this.project.status != "finished") {
-            this.project.contraints.forEach((point: { latitude: string; longitude: string ; type: string;}) => {
-              this.addPoint(+point.latitude, +point.longitude, point.type);
-            });
-        }
         if (this.project.status == "finished") {
             this.project.results.forEach((point: { coordonateX: string; coordonateY: string ; type: string; value: string}) => {
                 if (point.type == "sign") {
@@ -123,6 +123,7 @@ export class ProjectDetailComponent implements OnInit {
             }),
           ],
         }),
+        layerID: this.layerId,
         style: new ol.style.Style({
           image: new ol.style.Icon({
             anchor: [0.5, 0.5],
@@ -135,6 +136,7 @@ export class ProjectDetailComponent implements OnInit {
         name: "Point",
       });
     this.map.addLayer(vectorLayer);
+    this.layerId += 1;
   }
 
   getArrow(start_point: [Number, Number], end_point: [Number, Number]) {
@@ -241,6 +243,29 @@ export class ProjectDetailComponent implements OnInit {
         console.error(err);
       }
     });
+  }
+
+  displayConstraints() {
+    this.constraints.displayed = true;
+    this.project.contraints.forEach((point: { latitude: string; longitude: string ; type: string;}) => {
+      this.addPoint(+point.latitude, +point.longitude, point.type);
+      this.constraints.id.push(this.layerId - 1)
+    });
+  }
+
+  hideConstraints() {
+    this.constraints.displayed = false;
+    var layers = this.map.getLayers().getArray();
+
+    for (var i = 0; i < layers.length; i++) {
+      for (var y = 0; y < this.constraints.id.length; y++) {
+        var id = layers[i].get("layerID");
+        if (id != undefined && layers[i].get("layerID") == this.constraints.id[y]) {
+          this.map.removeLayer(layers[i]);
+        }
+      }
+    }
+    this.constraints.id = [];
   }
 
   changeCycle(cycleNB: Number) {

@@ -66,7 +66,15 @@
             </ul>
           </div>
           <br>
-          <div class="field px-6 mt-3 has-text-white" *ngIf='project.status != "finished"'>
+          <button class="button has-text-weight-bold"
+                        *ngIf='constraints.displayed == false'
+                        style="width: 250px; background: white; border-radius: 5px; border-color:white; color: #22252C; margin-left: 50%; margin-top: 1%"
+                        (click)="displayConstraints()">Afficher les contraintes</button>
+          <button class="button has-text-weight-bold"
+                        *ngIf='constraints.displayed == true'
+                        style="width: 250px; background: white; border-radius: 5px; border-color:white; color: #22252C; margin-left: 50%; margin-top: 1%"
+                        (click)="hideConstraints()">Cacher les contraintes</button>
+          <div class="field px-6 mt-3 has-text-white" *ngIf='constraints.displayed == true'>
             <label class="label has-text-white">Liste des Contraintes ({{project.contraints.length}})</label>
             <ul>
               <li *ngFor="let contraint of project.contraints;">
@@ -115,8 +123,8 @@
               </li>
             </ul>
             <p>
-              <img src="{{this.graphicTrip}}" alt="graphique">
-              <img src="{{this.graphicRoad}}" alt="graphique">
+              <img style="max-width: 50%; height: auto; padding: 5px;" src="{{this.graphicTrip}}" alt="graphique">
+              <img style="max-width: 50%; height: auto; padding: 5px;" src="{{this.graphicRoad}}" alt="graphique">
             </p>
           </div>
         </div>
