@@ -19,19 +19,19 @@ export class ProjectDetailComponent implements OnInit {
   graphicRoad: string = '';
   layerId: number = 0;
   constraints: any = {};
-  valueJson: {id: string, oldTlCycle: string, tlCycle: string, oldOrPrev: boolean}[] = [];
-  prevAndNewState: {id: string, type: string, state: string, oldState: string, oldOrPrev: boolean}[] = [];
+  valueJson: { id: string, oldTlCycle: string, tlCycle: string, oldOrPrev: boolean }[] = [];
+  prevAndNewState: { id: string, type: string, state: string, oldState: string, oldOrPrev: boolean }[] = [];
 
-  constructor(private route: ActivatedRoute, private backend:BackendService, private titleService:Title) {}
+  constructor(private route: ActivatedRoute, private backend: BackendService, private titleService: Title) { }
 
   ngOnInit() {
     this.constraints.displayed = false;
     this.constraints.id = [];
     this.projectId = this.route.snapshot.paramMap.get('projectId')!;
-    this.backend.getProjectbyId(this.projectId).subscribe ({
+    this.backend.getProjectbyId(this.projectId).subscribe({
       next: (res) => {
         this.project = JSON.parse(JSON.stringify(res))
-         this.map = new ol.Map({
+        this.map = new ol.Map({
           target: 'map',
           controls: ol.control.defaults({
             attributionOptions: {
@@ -61,71 +61,71 @@ export class ProjectDetailComponent implements OnInit {
           }),
         });
         if (this.project.status == "finished") {
-            this.project.results.forEach((point: { coordonateX: string; coordonateY: string ; type: string; value: string; oldValue: string, id: string;}) => {
-                if (point.type == "sign") {
-                  this.addPoint(+point.coordonateX, +point.coordonateY, point.type + "_" + point.value, "sign_" + point.id);
-                  this.prevAndNewState.push({"id": point.id, "type": "sign", "state": point.value, "oldState": point.oldValue, "oldOrPrev": true})
-                }
-                if (point.type == "speed") {
-                  var speed = Math.round(Number(point.value) * 3.6);
-                  var oldSpeed = Math.round(Number(point.oldValue) * 3.6);
-                  this.addPoint(+point.coordonateX, +point.coordonateY, point.type + "_" + speed.toString(), "speed_" + point.id);
-                  this.prevAndNewState.push({"id": point.id, "type": "speed", "state": speed.toString(), "oldState": oldSpeed.toString(), "oldOrPrev": true})
-                }
-                if (point.type == "priority_up") {
-                  var newValue = point.value.replace(/'/g, "\"")
-                  var oldValue = point.oldValue.replace(/'/g, "\"")
-                  const valueJson = JSON.parse(newValue)
-                  const oldValueJson = JSON.parse(oldValue)
-                  for (let i = 0; i < valueJson["edgesPriority"].length; i++) {
-                    this.addPoint(+valueJson["edgesPriority"][i]["coordonateX"], +valueJson["edgesPriority"][i]["coordonateY"], "priority_" + valueJson["edgesPriority"][i]["priorityValue"], "priorityValue_" + point.id)
-                  }
-                  this.addPoint(+Number(valueJson["nodeCooX"]), +Number(valueJson["nodeCooY"]), "intersection", "priorityInt_" + point.id)
-                  this.addPoint(+point.coordonateX, +point.coordonateY, point.type, "priority_" + point.id);
-                  this.prevAndNewState.push({"id": point.id, "type": "priority_up", "state": JSON.stringify(valueJson), "oldState": JSON.stringify(oldValueJson), "oldOrPrev": true})
-                }
-                if (point.type == "priority_down") {
-                  var newValue = point.value.replace(/'/g, "\"")
-                  var oldValue = point.oldValue.replace(/'/g, "\"")
-                  const valueJson = JSON.parse(newValue)
-                  const oldValueJson = JSON.parse(oldValue)
-                  for (let i = 0; i < valueJson["edgesPriority"].length; i++) {
-                    this.addPoint(+valueJson["edgesPriority"][i]["coordonateX"], +valueJson["edgesPriority"][i]["coordonateY"], "priority_" + valueJson["edgesPriority"][i]["priorityValue"], "priorityValue_" +point.id)
-                  }
-                  this.addPoint(+Number(valueJson["nodeCooX"]), +Number(valueJson["nodeCooY"]), "intersection", "priorityInt_" + point.id)
-                  this.addPoint(+point.coordonateX, +point.coordonateY, point.type, "priority_" + point.id);
-                  this.prevAndNewState.push({"id": point.id, "type": "priority_down", "state": JSON.stringify(valueJson), "oldState": JSON.stringify(oldValueJson), "oldOrPrev": true})
-                }
-                if (point.type == "traffic_light") {
-                  var newValue = point.value.replace(/'/g, "\"")
-                  var oldValueString = point.oldValue.replace(/'/g, "\"")
-                  const valueJson = JSON.parse(newValue)
-                  const oldValueJson = JSON.parse(oldValueString)
+          this.project.results.forEach((point: { coordonateX: string; coordonateY: string; type: string; value: string; oldValue: string, id: string; }) => {
+            if (point.type == "sign") {
+              this.addPoint(+point.coordonateX, +point.coordonateY, point.type + "_" + point.value, "sign_" + point.id);
+              this.prevAndNewState.push({ "id": point.id, "type": "sign", "state": point.value, "oldState": point.oldValue, "oldOrPrev": true })
+            }
+            if (point.type == "speed") {
+              var speed = Math.round(Number(point.value) * 3.6);
+              var oldSpeed = Math.round(Number(point.oldValue) * 3.6);
+              this.addPoint(+point.coordonateX, +point.coordonateY, point.type + "_" + speed.toString(), "speed_" + point.id);
+              this.prevAndNewState.push({ "id": point.id, "type": "speed", "state": speed.toString(), "oldState": oldSpeed.toString(), "oldOrPrev": true })
+            }
+            if (point.type == "priority_up") {
+              var newValue = point.value.replace(/'/g, "\"")
+              var oldValue = point.oldValue.replace(/'/g, "\"")
+              const valueJson = JSON.parse(newValue)
+              const oldValueJson = JSON.parse(oldValue)
+              for (let i = 0; i < valueJson["edgesPriority"].length; i++) {
+                this.addPoint(+valueJson["edgesPriority"][i]["coordonateX"], +valueJson["edgesPriority"][i]["coordonateY"], "priority_" + valueJson["edgesPriority"][i]["priorityValue"], "priorityValue_" + point.id)
+              }
+              this.addPoint(+Number(valueJson["nodeCooX"]), +Number(valueJson["nodeCooY"]), "intersection", "priorityInt_" + point.id)
+              this.addPoint(+point.coordonateX, +point.coordonateY, point.type, "priority_" + point.id);
+              this.prevAndNewState.push({ "id": point.id, "type": "priority_up", "state": JSON.stringify(valueJson), "oldState": JSON.stringify(oldValueJson), "oldOrPrev": true })
+            }
+            if (point.type == "priority_down") {
+              var newValue = point.value.replace(/'/g, "\"")
+              var oldValue = point.oldValue.replace(/'/g, "\"")
+              const valueJson = JSON.parse(newValue)
+              const oldValueJson = JSON.parse(oldValue)
+              for (let i = 0; i < valueJson["edgesPriority"].length; i++) {
+                this.addPoint(+valueJson["edgesPriority"][i]["coordonateX"], +valueJson["edgesPriority"][i]["coordonateY"], "priority_" + valueJson["edgesPriority"][i]["priorityValue"], "priorityValue_" + point.id)
+              }
+              this.addPoint(+Number(valueJson["nodeCooX"]), +Number(valueJson["nodeCooY"]), "intersection", "priorityInt_" + point.id)
+              this.addPoint(+point.coordonateX, +point.coordonateY, point.type, "priority_" + point.id);
+              this.prevAndNewState.push({ "id": point.id, "type": "priority_down", "state": JSON.stringify(valueJson), "oldState": JSON.stringify(oldValueJson), "oldOrPrev": true })
+            }
+            if (point.type == "traffic_light") {
+              var newValue = point.value.replace(/'/g, "\"")
+              var oldValueString = point.oldValue.replace(/'/g, "\"")
+              const valueJson = JSON.parse(newValue)
+              const oldValueJson = JSON.parse(oldValueString)
 
-                  point.value = valueJson;
-                  point.oldValue = oldValueJson
-                  for (let i = 0; i < valueJson["sortedNode"].length; i++) {
-                    this.addPoint(+valueJson["sortedNode"][i]["closePoint"]["x"], +valueJson["sortedNode"][i]["closePoint"]["y"], "priority_" + String(i + 1), "tlPoint_" + point.id)
-                  }
-                  for (let i = 0; i < valueJson["newTlCycle"].length; i++)
-                    valueJson["newTlCycle"][i]["dispBool"] = 0;
-                  for (let i = 0; i < oldValueJson["newTlCycle"].length; i++)
-                    oldValueJson["newTlCycle"][i]["dispBool"] = 0;
-                  this.valueJson.push({
-                    id: point.id,
-                    oldTlCycle: JSON.stringify(oldValueJson["newTlCycle"]),
-                    tlCycle: JSON.stringify(valueJson["newTlCycle"]),
-                    oldOrPrev: true
-                  })
+              point.value = valueJson;
+              point.oldValue = oldValueJson
+              for (let i = 0; i < valueJson["sortedNode"].length; i++) {
+                this.addPoint(+valueJson["sortedNode"][i]["closePoint"]["x"], +valueJson["sortedNode"][i]["closePoint"]["y"], "priority_" + String(i + 1), "tlPoint_" + point.id)
+              }
+              for (let i = 0; i < valueJson["newTlCycle"].length; i++)
+                valueJson["newTlCycle"][i]["dispBool"] = 0;
+              for (let i = 0; i < oldValueJson["newTlCycle"].length; i++)
+                oldValueJson["newTlCycle"][i]["dispBool"] = 0;
+              this.valueJson.push({
+                id: point.id,
+                oldTlCycle: JSON.stringify(oldValueJson["newTlCycle"]),
+                tlCycle: JSON.stringify(valueJson["newTlCycle"]),
+                oldOrPrev: true
+              })
 
-                  this.addPoint(+point.coordonateX, +point.coordonateY, "trafficlight", "tl_" + point.id);
-                  this.prevAndNewState.push({"id": point.id, "type": "traffic_light", "state": JSON.stringify(valueJson["newTlCycle"]), "oldState": JSON.stringify(oldValueJson["newTlCycle"]), "oldOrPrev": true})
-                }
-            });
-            this.getGraphicTrip();
-            this.getGraphicRoad();
+              this.addPoint(+point.coordonateX, +point.coordonateY, "trafficlight", "tl_" + point.id);
+              this.prevAndNewState.push({ "id": point.id, "type": "traffic_light", "state": JSON.stringify(valueJson["newTlCycle"]), "oldState": JSON.stringify(oldValueJson["newTlCycle"]), "oldOrPrev": true })
+            }
+          });
+          this.getGraphicTrip();
+          this.getGraphicRoad();
         }
-      this.titleService.setTitle("Projet " + this.project.name + " - Signai")
+        this.titleService.setTitle("Projet " + this.project.name + " - Signai")
 
       },
       error: (err) => {
@@ -136,28 +136,28 @@ export class ProjectDetailComponent implements OnInit {
 
   addPoint(lat: number, lng: number, types: string, id: string) {
     var vectorLayer = new ol.layer.Vector({
-        source: new ol.source.Vector({
-          features: [
-            new ol.Feature({
-              geometry: new ol.geom.Point(
-                ol.proj.transform([lng, lat], 'EPSG:4326', 'EPSG:3857')
-              ),
-              name: id,
-            }),
-          ],
-        }),
-        layerID: this.layerId,
-        style: new ol.style.Style({
-          image: new ol.style.Icon({
-            anchor: [0.5, 0.5],
-            anchorXUnits: 'fraction',
-            anchorYUnits: 'fraction',
-            scale: (types == "priority_1" || types == "priority_2" || types == "priority_3" || types == "priority_4" || types == "priority_5") ? 0.030: 0.055,
-            src: '/assets/' + types + '.png',
+      source: new ol.source.Vector({
+        features: [
+          new ol.Feature({
+            geometry: new ol.geom.Point(
+              ol.proj.transform([lng, lat], 'EPSG:4326', 'EPSG:3857')
+            ),
+            name: id,
           }),
+        ],
+      }),
+      layerID: this.layerId,
+      style: new ol.style.Style({
+        image: new ol.style.Icon({
+          anchor: [0.5, 0.5],
+          anchorXUnits: 'fraction',
+          anchorYUnits: 'fraction',
+          scale: (types == "priority_1" || types == "priority_2" || types == "priority_3" || types == "priority_4" || types == "priority_5") ? 0.030 : 0.055,
+          src: '/assets/' + types + '.png',
         }),
-        name: "Point",
-      });
+      }),
+      name: "Point",
+    });
     this.map.addLayer(vectorLayer);
     this.layerId += 1;
   }
@@ -193,7 +193,7 @@ export class ProjectDetailComponent implements OnInit {
     const styles = [
       new ol.style.Style({
         stroke: new ol.style.Stroke({
-          color: color == "vert" ? "green": "yellow",
+          color: color == "vert" ? "green" : "yellow",
           width: 2,
         }),
       }),
@@ -209,15 +209,15 @@ export class ProjectDetailComponent implements OnInit {
         anchorYUnits: 'fraction',
         rotateWithView: true,
         rotation: -rotation,
-        color: color == "vert" ? "green": "yellow",
+        color: color == "vert" ? "green" : "yellow",
       }),
     }))
 
     var linie = new ol.layer.Vector({
       source: new ol.source.Vector({
         features: [new ol.Feature({
-            geometry: new ol.geom.LineString([location1, location2]),
-            name: id,
+          geometry: new ol.geom.LineString([location1, location2]),
+          name: id,
         })]
       }),
       name: "Line",
@@ -263,28 +263,28 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   displayConstraints() {
-    this.constraints.displayed = true;
-    this.project.contraints.forEach((point: { latitude: string; longitude: string ; type: string;}) => {
-      this.addPoint(+point.latitude, +point.longitude, point.type, "constraint");
-      this.constraints.id.push(this.layerId - 1)
-    });
-  }
+    if (this.constraints.displayed == true) {
+      this.constraints.displayed = false;
+      var layers = this.map.getLayers().getArray();
 
-  hideConstraints() {
-    this.constraints.displayed = false;
-    var layers = this.map.getLayers().getArray();
-
-    for (var i = 0; i < layers.length; i++) {
-      for (var y = 0; y < this.constraints.id.length; y++) {
-        var id = layers[i].get("layerID");
-        if (id != undefined && layers[i].get("layerID") == this.constraints.id[y]) {
-          this.map.removeLayer(layers[i]);
+      for (var i = 0; i < layers.length; i++) {
+        for (var y = 0; y < this.constraints.id.length; y++) {
+          var id = layers[i].get("layerID");
+          if (id != undefined && layers[i].get("layerID") == this.constraints.id[y]) {
+            this.map.removeLayer(layers[i]);
+          }
         }
       }
+      this.constraints.id = [];
     }
-    this.constraints.id = [];
+    else {
+      this.constraints.displayed = true;
+      this.project.contraints.forEach((point: { latitude: string; longitude: string; type: string; }) => {
+        this.addPoint(+point.latitude, +point.longitude, point.type, "constraint");
+        this.constraints.id.push(this.layerId - 1)
+      });
+    }
   }
-
 
   changeCycle(id: string, cycleNB: Number) {
     let cycleIndex: number = this.getCycleIndex(id)
@@ -367,7 +367,7 @@ export class ProjectDetailComponent implements OnInit {
           this.prevAndNewState[i].oldOrPrev = !this.prevAndNewState[i].oldOrPrev
         }
         else {
-          this.addPoint(lat, lng,  "priority_up", "priority_" + id);
+          this.addPoint(lat, lng, "priority_up", "priority_" + id);
           this.setPriorityIntPoint(id, this.prevAndNewState[i].state)
           this.prevAndNewState[i].oldOrPrev = !this.prevAndNewState[i].oldOrPrev
         }
@@ -386,7 +386,7 @@ export class ProjectDetailComponent implements OnInit {
           this.prevAndNewState[i].oldOrPrev = !this.prevAndNewState[i].oldOrPrev
         }
         else {
-          this.addPoint(lat, lng,  "priority_down", "priority_" + id);
+          this.addPoint(lat, lng, "priority_down", "priority_" + id);
           this.setPriorityIntPoint(id, this.prevAndNewState[i].state)
           this.prevAndNewState[i].oldOrPrev = !this.prevAndNewState[i].oldOrPrev
         }
@@ -398,11 +398,11 @@ export class ProjectDetailComponent implements OnInit {
 
     for (var i = 0; i < this.prevAndNewState.length; i++) {
       if (this.prevAndNewState[i].id == id && this.prevAndNewState[i].type == "traffic_light") {
-          this.prevAndNewState[i].oldOrPrev = !this.prevAndNewState[i].oldOrPrev
-          for (let i = 0; i < this.valueJson.length; i++) {
-            if (this.valueJson[i]["id"] == id)
-              this.valueJson[i]["oldOrPrev"] = !this.valueJson[i]["oldOrPrev"]
-          }
+        this.prevAndNewState[i].oldOrPrev = !this.prevAndNewState[i].oldOrPrev
+        for (let i = 0; i < this.valueJson.length; i++) {
+          if (this.valueJson[i]["id"] == id)
+            this.valueJson[i]["oldOrPrev"] = !this.valueJson[i]["oldOrPrev"]
+        }
       }
     }
   }
@@ -437,7 +437,7 @@ export class ProjectDetailComponent implements OnInit {
     return (false)
   }
 
-  getCycleIndex(id: string): number{
+  getCycleIndex(id: string): number {
     let cycleID: number = 0
 
     for (let i = 0; i < this.valueJson.length; i++) {
