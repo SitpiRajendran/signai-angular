@@ -95,28 +95,60 @@
               <li *ngFor="let contraint of project.results;">
                 <p *ngIf='contraint.type == "sign" && contraint.value == "redlight"'>🚦 Feu de Signalisation à
                   <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</a></p>
-                <p *ngIf='contraint.type == "sign" && contraint.value == "priority_stop"'>🛑 Panneau Stop à
-                  <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</a></p>
-                <p *ngIf='contraint.type == "sign" && contraint.value == "right_before_left"'>🛑 Panneau priorité à droite à
-                  <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</a></p>
-                <p *ngIf='contraint.type == "sign" && contraint.value == "priority"'>🛑 Panneau priorité à
-                  <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</a></p>
-                <p *ngIf='contraint.type == "yield"'>🔻 Cédez le Passage à
-                  <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.latitude.toString().slice(0,7)}}, {{contraint.longitude.toString().slice(0,7)}}</a></p>
-                <p *ngIf='contraint.type == "roundabout"'>🔄 Carrefour à sens giratoire à
-                  <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.latitude.toString().slice(0,7)}}, {{contraint.longitude.toString().slice(0,7)}}</a></p>
-                <p *ngIf='contraint.type == "speed"' >🛞 Vitesse limitée à {{ contraint.value * 3.6 | number : '1.0-0'}}km/h à
-                  <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</a></p>
-                <p *ngIf='contraint.type == "priority_up"'>🛞 Priority de la route augmenté à
-                  <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</a></p>
-                <p *ngIf='contraint.type == "priority_down"' >🛞 Priority de la route baissé à
-                  <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</a></p>
-                <p *ngIf='contraint.type == "traffic_light"' >🛞 Changement des cycles du feux à
+
+                  <p *ngIf='contraint.type == "sign" && contraint.value == "priority_stop"'>
+                  <span *ngIf='getModifState(contraint.id) == true'>🛑 Nouveau Panneau Stop à </span>
+                  <span *ngIf='getModifState(contraint.id) == false'>🛑 Ancien {{getSignOldModif(contraint.id)}} à </span>
                   <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</a>
-                  <li *ngFor="let cycle of contraint.value['newTlCycle']" style="margin-left: 5%;" >cycle numéro {{cycle["cycleNb"]}}, durée : {{cycle["duration"]}} secondes. <a (click)="changeCycle(cycle['cycleNb'])"> {{cycle["dispBool"] == 0 ? 'open' : 'close'}}</a>
+                  <a (click)="signSetPointStateAndOldState(contraint.id, contraint.coordonateX, contraint.coordonateY)"> ↩️</a>
+                </p>
+                <p *ngIf='contraint.type == "sign" && contraint.value == "right_before_left"'>
+                  <span *ngIf='getModifState(contraint.id) == true'>🛑 Nouveau panneau priorité à droite à </span>
+                  <span *ngIf='getModifState(contraint.id) == false'>🛑 Ancien {{getSignOldModif(contraint.id)}} à </span>
+                  <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</a>
+                  <a (click)="signSetPointStateAndOldState(contraint.id, contraint.coordonateX, contraint.coordonateY)"> ↩️</a>
+                </p>
+                <p *ngIf='contraint.type == "sign" && contraint.value == "priority"'>
+                  <span *ngIf='getModifState(contraint.id) == true'>🛑 Nouveau panneau priorité à </span>
+                  <span *ngIf='getModifState(contraint.id) == false'>🛑 Ancien {{getSignOldModif(contraint.id)}} à </span>
+                  <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</a>
+                  <a (click)="signSetPointStateAndOldState(contraint.id, contraint.coordonateX, contraint.coordonateY)"> ↩️</a>
+                </p>
+
+                <p *ngIf='contraint.type == "yield"'>🔻 Cédez le Passage à 
+                  <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.latitude.toString().slice(0,7)}}, {{contraint.longitude.toString().slice(0,7)}}</a></p>
+                <p *ngIf='contraint.type == "roundabout"'>🔄 Carrefour à sens giratoire à 
+                  <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.latitude.toString().slice(0,7)}}, {{contraint.longitude.toString().slice(0,7)}}</a></p>
+
+                <p *ngIf='contraint.type == "speed"' >🛞 {{getModifState(contraint.id) ? "Nouvelle vitesse limité " : "Ancienne vitesse limité à " }}
+                  {{(getModifState(contraint.id) == true) ? (contraint.value * 3.6 ).toFixed(0): (contraint.oldValue * 3.6).toFixed(0)}} km/h à
+                  <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</a>
+                  <a (click)="speedSetPointStateAndOldState(contraint.id, contraint.coordonateX, contraint.coordonateY)"> ↩️</a>
+                </p>
+
+                <p *ngIf='contraint.type == "priority_up"'>🛞
+                  <span *ngIf='getModifState(contraint.id) == true'> Augmentation de la priorité à </span>
+                  <span *ngIf='getModifState(contraint.id) == false'> Ancienne priorité de la route à </span>
+                  <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</a>
+                  <a (click)="priorityUpSetPointStageAndOldState(contraint.id, contraint.coordonateX, contraint.coordonateY)"> ↩️</a>
+                </p>
+
+                <p *ngIf='contraint.type == "priority_down"' >🛞
+                  <span *ngIf='getModifState(contraint.id) == true'> Priorité de la route baissé à </span>
+                  <span *ngIf='getModifState(contraint.id) == false'> Ancienne priorité de la route à </span>
+                  <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</a>
+                  <a (click)="priorityDownSetPointStageAndOldState(contraint.id, contraint.coordonateX, contraint.coordonateY)"> ↩️</a>
+                </p>
+
+                <p *ngIf='contraint.type == "traffic_light"' >🛞
+                  <span *ngIf='getModifState(contraint.id) == true'> Changement des cycles du feux à </span>
+                  <span *ngIf='getModifState(contraint.id) == false'> Ancien cyle du feu à </span>
+                  <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</a>
+                  <a (click)="tlSetPointStageAndOldState(contraint.id, contraint.coordonateX, contraint.coordonateY)"> ↩️</a>
+                  <li *ngFor="let cycle of (getModifState(contraint.id) == true ? contraint.value['newTlCycle']: contraint.oldValue['newTlCycle'])" style="margin-left: 5%;" >cycle numéro {{cycle["cycleNb"]}}, durée : {{cycle["duration"]}} secondes. <a (click)="changeCycle(contraint.id, cycle['cycleNb'])"> {{cycle["dispBool"] == 0 ? 'open' : 'close'}}</a>
                     <p *ngIf="cycle['dispBool']">
-                    <li *ngFor="let direction of cycle['detail']" style="margin-left: 5%">De la route {{direction["fromNode"]}} à la route {{direction["toNode"]}}
-                    <span style="height: 25px; width: 25px; border-radius: 50%; display: inline-block" [style.background]="direction['color'] == 'vert' ? 'green' : 'yellow'"></span></li>
+                      <li *ngFor="let direction of cycle['detail']" style="margin-left: 5%">De la route {{direction["fromNode"]}} à la route {{direction["toNode"]}}
+                      <span style="height: 25px; width: 25px; border-radius: 50%; display: inline-block" [style.background]="direction['color'] == 'vert' ? 'green' : 'yellow'"></span></li>
                     </p>
                   </li>
                 </p>
