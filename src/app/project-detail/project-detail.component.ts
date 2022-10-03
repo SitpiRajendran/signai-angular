@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { BackendService } from '../backend.service';
 import { Title } from '@angular/platform-browser';
-import { range } from 'rxjs';
+import jsPDF from "jspdf";
 
 declare var ol: any;
 
@@ -488,5 +488,10 @@ export class ProjectDetailComponent implements OnInit {
         this.getArrow([fromNodeY, fromNodeX], [toNodeY, toNodeX], "arrow_" + id)
       }
     }
+  }
+
+  downloadPDF() {
+    let doc = new jsPDF();
+    doc.save("signai-rapport-" + this.project.name.split(' ').join('_') + ".pdf");
   }
 }

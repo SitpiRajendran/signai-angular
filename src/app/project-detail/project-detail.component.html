@@ -6,8 +6,8 @@
   <div class="column is-10">
     <div class="side-box">
       <div class="columns m-0 p-0" style="width: 100%; height: 100%;">
-        <div class="column is-6" style="overflow-y: scroll;">
-          <p class="title is-4 has-text-white pt-6 pl-6">{{project.name}}</p>
+        <div class="column is-6" style="overflow-y: scroll;" id="dashboard">
+          <p class="title is-4 has-text-white pt-6 pl-6">{{project.name}} <span class="is-size-6 has-text-weight-normal is-clickable is-hoverable has-text-info" *ngIf="project.status == 'finished'" (click)="downloadPDF()"> <i class='bx bxs-file-pdf'></i></span></p>
           <p class="subtitle is-5 has-text-white pt-4 px-6">{{project.description}}</p>
           <p class="subtitle is-6 has-text-white pt-4 px-6 mb-2">Crée le : {{project.createdAt.slice(0,10)}}</p>
           <p class="subtitle is-6 has-text-white px-6">Modifié le : {{project.updatedAt.slice(0,10)}}</p>
