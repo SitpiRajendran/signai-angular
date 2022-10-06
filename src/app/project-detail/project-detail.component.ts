@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { BackendService } from '../backend.service';
 import { Title } from '@angular/platform-browser';
+import { ReactiveFormsModule } from '@angular/forms';
+import { cp } from 'fs';
 
 declare var ol: any;
 
@@ -399,6 +401,12 @@ export class ProjectDetailComponent implements OnInit {
     return (false)
   }
 
+  getCycleDispValue(id: string, cycleNB: number): number {
+    let cycleIndex: number = this.getCycleIndex(id)
+    let cycleJson = JSON.parse(this.valueJson[cycleIndex]["tlCycle"])
+    return (cycleJson[cycleNB]["dispBool"])
+  }
+
   getCycleIndex(id: string): number{
     let cycleID: number = 0
 
@@ -409,7 +417,7 @@ export class ProjectDetailComponent implements OnInit {
     return (cycleID)
   }
 
-  setActualTl(id: string, cycleNB: Number, cycleJson: any) {
+  setActualTl(id: string, cycleNB: Number, cycleJson: any): any {
     for (let i = 0; i < cycleJson.length; i++) {
       if (cycleJson[i]["cycleNb"] == cycleNB) {
         if (cycleJson[i]["dispBool"] == 1) {
@@ -437,6 +445,7 @@ export class ProjectDetailComponent implements OnInit {
         }
       }
     }
+    return (cycleJson)
   }
 
 
@@ -444,11 +453,13 @@ export class ProjectDetailComponent implements OnInit {
     let cycleIndex: number = this.getCycleIndex(id)
     if (this.valueJson[cycleIndex]["oldOrPrev"] == true) {
       let cycleJson = JSON.parse(this.valueJson[cycleIndex]["tlCycle"])
-      this.setActualTl(id, cycleNB, cycleJson)
+      cycleJson = this.setActualTl(id, cycleNB, cycleJson)
+      this.valueJson[cycleIndex]["tlCycle"] = JSON.stringify(cycleJson)
     }
     else {
       let cycleJson = JSON.parse(this.valueJson[cycleIndex]["oldTlCycle"])
-      this.setActualTl(id, cycleNB, cycleJson)
+      cycleJson = this.setActualTl(id, cycleNB, cycleJson)
+      this.valueJson[cycleIndex]["tlCycle"] = JSON.stringify(cycleJson)
     }
   }
   closeAllCycle(cycle: any, id: string) {

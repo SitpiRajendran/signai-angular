@@ -137,7 +137,7 @@
                   <span *ngIf='getModifState(contraint.id) == false'> Ancien cyle du feu à </span>
                   <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</a>
                   <a (click)="tlSetPointStageAndOldState(contraint.id, contraint.coordonateX, contraint.coordonateY)"> ↩️</a>
-                  <li *ngFor="let cycle of (getModifState(contraint.id) == true ? contraint.value['newTlCycle']: contraint.oldValue['newTlCycle'])" style="margin-left: 5%;" >cycle numéro {{cycle["cycleNb"]}}, durée : {{cycle["duration"]}} secondes. <a (click)="changeCycle(contraint.id, cycle['cycleNb'])"> {{cycle["dispBool"] == 0 ? 'open' : 'close'}}</a>
+                  <li *ngFor="let cycle of (getModifState(contraint.id) == true ? contraint.value['newTlCycle']: contraint.oldValue['newTlCycle'])" style="margin-left: 5%;" >cycle numéro {{cycle["cycleNb"]}}, durée : {{cycle["duration"]}} secondes. <a (click)="changeCycle(contraint.id, cycle['cycleNb'])"> {{getCycleDispValue(contraint.id, cycle['cycleNb'] - 1) == 0 ? 'open' : 'close'}}</a>
                     <p *ngIf="cycle['dispBool']">
                       <li *ngFor="let direction of cycle['detail']" style="margin-left: 5%">De la route {{direction["fromNode"]}} à la route {{direction["toNode"]}}
                       <span style="height: 25px; width: 25px; border-radius: 50%; display: inline-block" [style.background]="direction['color'] == 'vert' ? 'green' : 'yellow'"></span></li>
