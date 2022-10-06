@@ -130,7 +130,7 @@ export class Demande2Component implements OnInit {
     } else {
       description = (<HTMLInputElement>(
         document.getElementById('contstraintdesc')
-      )).value;     
+      )).value;
     }
     var object = { type, longitude, latitude, description };
     console.log(object);
@@ -189,4 +189,19 @@ export class Demande2Component implements OnInit {
       },
     });
   }
+
+  changeRadius(radius: string) {
+    if (radius == "" || parseInt(radius) < 20) {
+      return;
+    }
+    this.router.navigate(['/demande2', {name: this.name, postalcode: this.postalcode, city: this.city, address: this.address, radius: parseInt(radius), description: this.description}])
+      .then(() =>
+        window.location.reload()
+      );
+  }
+
+  redirectTo(uri:string){
+    this.router.navigateByUrl('', {skipLocationChange: true}).then(()=>
+    this.router.navigate([uri]));
+ }
 }
