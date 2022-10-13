@@ -186,19 +186,18 @@
                                 </p>
 
                                 <p *ngIf='contraint.type == "traffic_light"'>
-                                    <span *ngIf='getModifState(contraint.id, "trafficlight") == true'>🚦 Changement des cycles du feux à
+                                    <span *ngIf='getModifState(contraint.id, "traffic_light") == true'>🚦 Changement des cycles du feux à
                                     </span>
-                                    <span *ngIf='getModifState(contraint.id, "trafficlight") == false'>🚦 Ancien cyle du feu à </span>
+                                    <span *ngIf='getModifState(contraint.id, "traffic_light") == false'>🚦 Ancien cyle du feu à </span>
                                     <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}},
                                         {{contraint.coordonateY.toString().slice(0,7)}}</a>
                                     <a
                                         (click)="tlSetPointStageAndOldState(contraint.id, contraint.coordonateX, contraint.coordonateY)">
                                         ↩️</a>
-                            <li *ngFor="let cycle of (getModifState(contraint.id, 'trafficlight') == true ? contraint.value['newTlCycle']: contraint.oldValue['newTlCycle'])"
+                            <li *ngFor="let cycle of (getModifState(contraint.id, 'traffic_light') == true ? contraint.value['newTlCycle']: contraint.oldValue['newTlCycle'])"
                                 style="margin-left: 5%;">cycle numéro {{cycle["cycleNb"]}}, durée :
                                 {{cycle["duration"]}} secondes. <a
-                                    (click)="changeCycle(contraint.id, cycle['cycleNb'])"> {{cycle["dispBool"] == 0 ?
-                                    'open' : 'close'}}</a>
+                                    (click)="changeCycle(contraint.id, cycle['cycleNb'])"> {{getCycleDispValue(contraint.id, cycle['cycleNb'] - 1) == 0 ? 'open' : 'close'}}</a>
                                 <p *ngIf="cycle['dispBool']">
                             <li *ngFor="let direction of cycle['detail']" style="margin-left: 5%">De la route
                                 {{direction["fromNode"]}} à la route {{direction["toNode"]}}
