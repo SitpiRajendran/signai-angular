@@ -2,7 +2,7 @@
     <app-menu class="column is-2" style="display: flex; flex-direction: column; justify-content: space-between;"
         [contact_name]="'Sitpi RAJENDRAN'" [contact_mail]="'sitpi.rajendran@signai.fr'"
         [contact_telephone]="'+33.6.68.62.99.53'" [account_type]="'Epitech'"></app-menu>
-    <div class="column is-10 p-0">
+    <div class="column is-10 p-0" style="background: #1A1C20;">
         <div class="side-box">
             <div style="display: flex; justify-content: space-between;">
                 <p class="title is-4 has-text-white pt-6 pl-6">Dashboard</p>
@@ -11,18 +11,20 @@
                         Projet</button></a>
             </div>
             <div>
-                <div class="has-background-grey-light ml-6" style="border-radius: 16px; display: flex; flex-direction: row; justify-content: space-around; align-items: center; width: 20%; height:45px;">
+                <div class="has-background-grey-light ml-6"
+                    style="border-radius: 16px; display: flex; flex-direction: row; justify-content: space-around; align-items: center; width: 300px; height:45px;"
+                    (click)="this.tooglefinish = !this.tooglefinish">
                     <div>En cours</div>
                     <div>Terminé</div>
                 </div>
-                <div class="has-background-white has-text-black" style="border: 2px solid #3724b6; border-radius: 16px; width: 10%; position: relative; top: -47px; left: 47px; padding: 10px; text-align: center; box-shadow: 1px 1px 20px 0px #000000;">
-                    En cours
+                <div class="has-background-white has-text-black togglebutton"
+                    [ngClass]="this.tooglefinish ? 'togglebutton-active' : ''">
                 </div>
+
             </div>
-            <div class="sub-box mr-6 mt-2">
-                <p class="subtitle is-5 has-text-white px-6">Mes projets en cours</p>
-                <div class="columns is-multiline pl-6 ml-0">
-                    <div *ngFor="let project of projectlist" style="background: white; border-radius: 14px;"
+            <div class="sub-box mr-6 mt-2" *ngIf="!this.tooglefinish">
+                <div class="columns is-multiline pl-6 ml-0" >
+                    <div *ngFor="let project of projectlist" style="background: linear-gradient(168deg, #ffffff,#ffffff, #ffddc4); border-radius: 14px;"
                         class="column is-3 p-3 projectbox-now mr-5 mb-5 is-clickable">
                         <a href="/details/{{project._id}}">
                             <p class="has-text-grey is-size-8 mt-2">Créé le {{project.createdAt.slice(0,10)}}</p>
@@ -43,10 +45,9 @@
                     <p *ngIf="projectlist.length == 0">Aucun projet en cours</p>
                 </div>
             </div>
-            <div class="sub-box mr-6 mt-6">
-                <p class="subtitle is-5 has-text-white px-6">Mes projets terminés</p>
+            <div class="sub-box mr-6 mt-2" *ngIf="this.tooglefinish">
                 <div class="columns is-multiline pl-6 ml-0">
-                    <div *ngFor="let project of finishedproject" style="background: white; border-radius: 14px;"
+                    <div *ngFor="let project of finishedproject" style="background: linear-gradient(168deg, #ffffff,#ffffff, #fde3ff); border-radius: 14px;"
                         class="column is-3 p-3 projectbox mr-5 mb-5 is-clickable">
                         <a href="/details/{{project._id}}">
                             <p class="has-text-grey is-size-8 mt-2">Créé le {{project.createdAt.slice(0,10)}}</p>
@@ -62,9 +63,9 @@
                                 Édité il y a {{ datediff(parseDate(this.todayDate),
                                 parseDate(project.updatedAt.slice(0,10)))}} jours</p>
                         </a>
+                        <p *ngIf="finishedproject.length == 0">Aucun projet en cours</p>
                     </div>
                 </div>
-                <p class="ml-6" *ngIf="finishedproject.length == 0">Aucun projet en cours</p>
             </div>
         </div>
     </div>

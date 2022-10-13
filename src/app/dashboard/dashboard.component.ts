@@ -19,7 +19,7 @@ export class DashboardComponent implements OnInit {
     public finishedproject: any = [];
     public errormsg: string = "";
     public todayDate: string = "";
-
+    public tooglefinish: boolean = false;
     constructor(private router: Router, private backend: BackendService, private cookieService: CookieService, private titleService: Title) { }
 
     ngOnInit(): void {
