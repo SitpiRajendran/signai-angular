@@ -288,18 +288,6 @@ export class ProjectDetailComponent implements OnInit {
     }
   }
 
-  // changeCycle(id: string, cycleNB: Number) {
-  //   let cycleIndex: number = this.getCycleIndex(id)
-  //   if (this.valueJson[cycleIndex]["oldOrPrev"] == true) {
-  //     let cycleJson = JSON.parse(this.valueJson[cycleIndex]["tlCycle"])
-  //     this.setActualTl(id, cycleNB, cycleJson)
-  //   }
-  //   else {
-  //     let cycleJson = JSON.parse(this.valueJson[cycleIndex]["oldTlCycle"])
-  //     this.setActualTl(id, cycleNB, cycleJson)
-  //   }
-  // }
-
   removeLayerByFeatureID(id: string, type: string) {
     var layers = this.map.getLayers().getArray();
     for (var i = 0; i < layers.length; i++) {
@@ -432,9 +420,9 @@ export class ProjectDetailComponent implements OnInit {
     return ("")
   }
 
-  getModifState(id: string): boolean {
+  getModifState(id: string, type: string): boolean {
     for (var i = 0; i < this.prevAndNewState.length; i++) {
-      if (this.prevAndNewState[i].id == id)
+      if (this.prevAndNewState[i].id == id && type == this.prevAndNewState[i].type)
         return (this.prevAndNewState[i].oldOrPrev)
     }
     return (false)
@@ -442,7 +430,14 @@ export class ProjectDetailComponent implements OnInit {
 
   getCycleDispValue(id: string, cycleNB: number): number {
     let cycleIndex: number = this.getCycleIndex(id)
-    let cycleJson = JSON.parse(this.valueJson[cycleIndex]["tlCycle"])
+    let cycleJson: any = {}
+
+    if (this.valueJson[cycleIndex]["oldOrPrev"] == true) {
+      cycleJson = JSON.parse(this.valueJson[cycleIndex]["tlCycle"])
+    }
+    else {
+      cycleJson = JSON.parse(this.valueJson[cycleIndex]["oldTlCycle"])
+    }
     return (cycleJson[cycleNB]["dispBool"])
   }
 
@@ -497,7 +492,7 @@ export class ProjectDetailComponent implements OnInit {
     else {
       let cycleJson = JSON.parse(this.valueJson[cycleIndex]["oldTlCycle"])
       cycleJson = this.setActualTl(id, cycleNB, cycleJson)
-      this.valueJson[cycleIndex]["tlCycle"] = JSON.stringify(cycleJson)
+      this.valueJson[cycleIndex]["oldTlCycle"] = JSON.stringify(cycleJson)
     }
   }
   closeAllCycle(cycle: any, id: string) {
