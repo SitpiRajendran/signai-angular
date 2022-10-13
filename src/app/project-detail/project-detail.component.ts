@@ -511,7 +511,21 @@ export class ProjectDetailComponent implements OnInit {
 
   downloadPDF() {
     let doc = new jsPDF();
+    doc.text("Signai", 10, 10)
     doc.save("signai-rapport-" + this.project.name.split(' ').join('_') + ".pdf");
     console.log("remove layer")
+  }
+
+  doCopy () {
+/*     var target = this.dataset.target;
+    var fromElement = document.querySelector(target);
+    if(!fromElement) return;
+
+    var range = document.createRange();
+    var selection = window.getSelection();
+    range.selectNode(fromElement);
+    selection.removeAllRanges();
+    selection.addRange(range);
+ */
   }
 }

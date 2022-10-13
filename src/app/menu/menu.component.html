@@ -4,30 +4,33 @@
     <br>
     <div class="ml-3 mt-2">
         <a href="/dashboard">
-
-            <p class="subtitle is-5 has-text-weight-semibold has-text-white ml-5 mb-5"> <i
+            <p class="subtitle is-5 has-text-weight-semibold has-text-white ml-3 mb-5"> <i
                     class='bx bxs-dashboard mr-3'></i>Dashboard</p>
         </a>
         <a href="/moncompte">
-            <p class="subtitle is-5 has-text-weight-semibold has-text-white ml-5 mb-5"><i
-                    class='bx bxs-user-rectangle mr-3'></i>Mon Compte</p>
+            <p class="subtitle is-5 has-text-weight-semibold has-text-white ml-3 mb-5"><i
+                    class='bx bxs-user-rectangle mr-3'></i>Mon compte</p>
         </a>
         <a href="">
-            <p class="subtitle is-5 has-text-weight-semibold has-text-white ml-5 mb-5"><i
+            <p class="subtitle is-5 has-text-weight-semibold has-text-white ml-3 mb-5"><i
                     class='bx bxs-help-circle mr-3'></i>Aide</p>
         </a>
     </div>
 </div>
 
-<div>
-    <div class="mb-4 ml-2 pl-4 py-3 has-text-white" style="background: #2C1F81; border-radius: 24px;">
+<div *ngIf="account_type != 'Epitech'">
+
+    <div class="mb-4 ml-2 pl-4 py-3 has-text-white" style="background: #3724b6; border-radius: 24px;" >
         <p class="is-size-8">Votre conseiller</p>
         <br>
         <p class="subtitle is-5 has-text-white has-text-weight-semibold mb-3">{{contact_name}}</p>
         <p class="is-size-8">{{contact_mail}}</p>
         <p class="is-size-8">{{contact_telephone}}</p>
     </div>
+    <a href="/disconnect" class="has-text-grey-dark is-size-7"><i class='bx bxs-door-open pl-3'></i>disconnect - dev.mode</a>
+</div>
 
-    <a href="/disconnect"><p style="display: block; margin-left: auto; margin-right: auto; border-radius: 20px;" class="button is-danger has-text-white mb-4 ml-2 mr-1"><i
-        class='bx bxs-door-open mr-3'></i>Se déconnecter</p></a>
+<div *ngIf="account_type == 'Epitech'" class="pl-5">
+    <p class="is-size-6"><i class='bx bxs-user mr-2'></i>Conseiller SignAI</p>
+    <a href="/disconnect" class="has-text-grey-dark is-size-7"><i class='bx bxs-door-open pb-3'></i>disconnect - dev.mode</a>
 </div>

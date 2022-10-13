@@ -9,8 +9,9 @@ import { CookieService } from 'ngx-cookie-service';
 
 export class BackendService {
 
-    public BACKEND_URL = "https://signai.herokuapp.com";
-    //"http://localhost:3001/"
+    //public BACKEND_URL = "https://signai.herokuapp.com";
+    public BACKEND_URL = "http://167.172.100.15:3001";
+    //public BACKEND_URL = "http://localhost:3001"
     constructor(private http: HttpClient, private cookieService: CookieService) { }
 
     register(mail: string, password: string, firstname: string, name: string, phone: string) {

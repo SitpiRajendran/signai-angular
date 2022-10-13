@@ -11,6 +11,7 @@ export class MenuComponent implements OnInit {
   @Input() contact_name: string = "";
   @Input() contact_mail: string = "";
   @Input() contact_telephone: string = "";
+  @Input() account_type: string = "";
 
   constructor() { }
 

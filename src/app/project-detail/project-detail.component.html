@@ -1,165 +1,239 @@
 <!-- https://balramchavan.medium.com/using-openstreetmap-inside-angular-v6-3d42cbf03e57 -->
 <div class="columns m-0 p-0" style="background: #161616; width: 100%; height: 100%">
-  <app-menu class="column is-2" style="display: flex; flex-direction: column; justify-content: space-between;"
-    [contact_name]="'Sitpi RAJENDRAN'" [contact_mail]="'sitpi.rajendran@signai.fr'"
-    [contact_telephone]="'+33.6.68.62.99.53'"></app-menu>
-  <div class="column is-10">
-    <div class="side-box">
-      <div class="columns m-0 p-0" style="width: 100%; height: 100%;">
-        <div class="column is-6" style="overflow-y: scroll;" id="dashboard">
-          <p class="title is-4 has-text-white pt-6 pl-6">{{project.name}} <span class="is-size-6 has-text-weight-normal is-clickable is-hoverable has-text-info" *ngIf="project.status == 'finished'" (click)="downloadPDF()"> <i class='bx bxs-file-pdf'></i></span></p>
-          <p class="subtitle is-5 has-text-white pt-4 px-6">{{project.description}}</p>
-          <p class="subtitle is-6 has-text-white pt-4 px-6 mb-2">Crée le : {{project.createdAt.slice(0,10)}}</p>
-          <p class="subtitle is-6 has-text-white px-6">Modifié le : {{project.updatedAt.slice(0,10)}}</p>
-          <div class="field px-6 mt-3 has-text-white" *ngIf='project.status'>
-            <label class="label has-text-white">Etapes du Projet :</label>
-            <br>
-            <ul class="steps has-content-centered">
-              <li *ngIf='project.status != "created"' class="steps-segment">
-                <span class="steps-marker"></span>
-                <div class="steps-content">
-                  <p class="subtitle is-6 has-text-white">Création</p>
+    <app-menu class="column is-2" style="display: flex; flex-direction: column; justify-content: space-between;"
+        [contact_name]="'Sitpi RAJENDRAN'" [contact_mail]="'sitpi.rajendran@signai.fr'"
+        [contact_telephone]="'+33.6.68.62.99.53'" [account_type]="'Epitech'"></app-menu>
+    <div class="column is-10 p-0">
+        <div class="side-box">
+            <div class="columns m-0 p-0" style="width: 100%; height: 100%;">
+                <div class="column is-6" style=" overflow-y: scroll;" id="dashboard">
+                    <p class="has-text-grey is-capitalize pt-5 pl-6 is-size-7 has-text-weight-bold">PROPOSITION AFIN DE
+                        FLUIDIFIER LE TRAFIC ROUTIER</p>
+                    <p class="title is-3 has-text-white pl-6 pt-1 ">{{project.name}}</p>
+                    <p class="subtitle is-6 has-text-grey-light pt-3 px-6 mb-1">{{project.description}}</p>
+                    <div style="display: flex; flex-direction: row;">
+                        <p class="subtitle is-7 has-text-grey px-6 mb-2">Créé le {{project.createdAt.slice(0,10)}}
+                        </p>
+                        <p class="subtitle is-7 has-text-grey px-6">Modifié le {{project.updatedAt.slice(0,10)}}</p>
+                    </div>
+                    <div class="field px-6 mt-3 has-text-white" *ngIf='project.status'>
+                        <label class="label has-text-white">Étapes du Projet :</label>
+                        <ul class="steps has-content-centered mt-4">
+                            <li *ngIf='project.status != "created"' class="steps-segment">
+                                <span class="steps-marker"></span>
+                                <div class="steps-content">
+                                    <p class="subtitle is-6 has-text-white">Création</p>
+                                </div>
+                            </li>
+                            <li *ngIf='project.status == "created"' class="steps-segment is-active">
+                                <span class="steps-marker"></span>
+                                <div class="steps-content">
+                                    <p class="subtitle is-6 has-text-white">Création</p>
+                                </div>
+                            </li>
+                            <li *ngIf='project.status != "running"' class="steps-segment">
+                                <span class="steps-marker"></span>
+                                <div class="steps-content">
+                                    <p class="subtitle is-6 has-text-white">Execution</p>
+                                </div>
+                            </li>
+                            <li *ngIf='project.status == "running"' class="steps-segment is-active">
+                                <span class="steps-marker"></span>
+                                <div class="steps-content">
+                                    <p class="subtitle is-6 has-text-white">Execution</p>
+                                </div>
+                            </li>
+                            <li *ngIf='project.status != "ended"' class="steps-segment">
+                                <span class="steps-marker"></span>
+                                <div class="steps-content">
+                                    <p class="subtitle is-6 has-text-white">Vérification</p>
+                                </div>
+                            </li>
+                            <li *ngIf='project.status == "ended"' class="steps-segment is-active">
+                                <span class="steps-marker"></span>
+                                <div class="steps-content">
+                                    <p class="subtitle is-6 has-text-white">Vérification</p>
+                                </div>
+                            </li>
+                            <li *ngIf='project.status == "finished"' class="steps-segment is-active">
+                                <span class="steps-marker"></span>
+                                <div class="steps-content">
+                                    <p class="subtitle is-6 has-text-white">Terminé</p>
+                                </div>
+                            </li>
+                            <li *ngIf='project.status != "finished"' class="steps-segment">
+                                <span class="steps-marker"></span>
+                                <div class="steps-content">
+                                    <p class="subtitle is-6 has-text-white">Terminé</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <br>
+
+                    <div class="field px-6 mt-3 has-text-white">
+                        <label class="label has-text-white">Liste des Contraintes ({{project.contraints.length}}) <span
+                                class="has-text-weight-normal is-clickable is-hoverable has-text-info"
+                                (click)="displayConstraints()" *ngIf="project.contraints.length > 0"><span
+                                    *ngIf='constraints.displayed == false'> - Voir </span> <span
+                                    *ngIf='constraints.displayed == true'> - Cacher </span>la liste
+                                complète</span></label>
+                        <ul *ngIf='constraints.displayed == true'>
+                            <li *ngFor="let contraint of project.contraints;">
+                                <p *ngIf='contraint.type == "trafficlight"'>🚦 Feu de Signalisation à
+                                    {{contraint.latitude.toString().slice(0,10)}},
+                                    {{contraint.longitude.toString().slice(0,10)}}</p>
+                                <p *ngIf='contraint.type == "stop"'>🛑 Panneau Stop à
+                                    {{contraint.latitude.toString().slice(0,10)}},
+                                    {{contraint.longitude.toString().slice(0,10)}}</p>
+                                <p *ngIf='contraint.type == "yield"'>🔻 Cédez le Passage à
+                                    {{contraint.latitude.toString().slice(0,10)}},
+                                    {{contraint.longitude.toString().slice(0,10)}}</p>
+                                <p *ngIf='contraint.type == "roundabout"'>🔄 Carrefour à sens giratoire à
+                                    {{contraint.latitude.toString().slice(0,10)}},
+                                    {{contraint.longitude.toString().slice(0,10)}}</p>
+                            </li>
+                        </ul>
+                    </div>
+
+
+
+                    <div class="field px-6 mt-3 has-text-white" *ngIf='project.status == "finished"'>
+                        <label class="label has-text-white">Résultats ({{project.results.length}})</label>
+                        <ul>
+                            <li *ngFor="let contraint of project.results;">
+                                <p *ngIf='contraint.type == "sign" && contraint.value == "redlight"'>🚦 Feu de
+                                    Signalisation à
+                                    <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}},
+                                        {{contraint.coordonateY.toString().slice(0,7)}}</a>
+                                </p>
+
+                                <p *ngIf='contraint.type == "sign" && contraint.value == "priority_stop"'>
+                                    <span *ngIf='getModifState(contraint.id, "sign") == true'>🛑 Nouveau Panneau Stop à </span>
+                                    <span *ngIf='getModifState(contraint.id,"sign") == false'>🛑 Ancien
+                                        {{getSignOldModif(contraint.id)}} à </span>
+                                    <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}},
+                                        {{contraint.coordonateY.toString().slice(0,7)}}</a>
+                                    <a
+                                        (click)="signSetPointStateAndOldState(contraint.id, contraint.coordonateX, contraint.coordonateY)">
+                                        ↩️</a>
+                                </p>
+                                <p *ngIf='contraint.type == "sign" && contraint.value == "right_before_left"'>
+                                    <span *ngIf='getModifState(contraint.id, "sign") == true'>🔺 Nouveau panneau priorité à
+                                        droite à </span>
+                                    <span *ngIf='getModifState(contraint.id, "sign") == false'>🔺 Ancien
+                                        {{getSignOldModif(contraint.id)}} à </span>
+                                    <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}},
+                                        {{contraint.coordonateY.toString().slice(0,7)}}</a>
+                                    <a
+                                        (click)="signSetPointStateAndOldState(contraint.id, contraint.coordonateX, contraint.coordonateY)">
+                                        ↩️</a>
+                                </p>
+                                <p *ngIf='contraint.type == "sign" && contraint.value == "priority"'>
+                                    <span *ngIf='getModifState(contraint.id, "sign") == true'>🔺 Nouveau panneau priorité à
+                                    </span>
+                                    <span *ngIf='getModifState(contraint.id, "sign") == false'>🔺 Ancien
+                                        {{getSignOldModif(contraint.id)}} à </span>
+                                    <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}},
+                                        {{contraint.coordonateY.toString().slice(0,7)}}</a>
+                                    <a
+                                        (click)="signSetPointStateAndOldState(contraint.id, contraint.coordonateX, contraint.coordonateY)">
+                                        ↩️</a>
+                                </p>
+
+                                <p *ngIf='contraint.type == "yield"'>🔻 Cédez le Passage à
+                                    <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.latitude.toString().slice(0,7)}},
+                                        {{contraint.longitude.toString().slice(0,7)}}</a>
+                                </p>
+                                <p *ngIf='contraint.type == "roundabout"'>🔄 Carrefour à sens giratoire à
+                                    <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.latitude.toString().slice(0,7)}},
+                                        {{contraint.longitude.toString().slice(0,7)}}</a>
+                                </p>
+
+                                <p *ngIf='contraint.type == "speed"'>🕛 {{getModifState(contraint.id, "speed") ? "Nouvelle
+                                    vitesse limité " : "Ancienne vitesse limité à " }}
+                                    {{(getModifState(contraint.id, "speed") == true) ? (contraint.value * 3.6 ).toFixed(0):
+                                    (contraint.oldValue * 3.6).toFixed(0)}} km/h à
+                                    <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}},
+                                        {{contraint.coordonateY.toString().slice(0,7)}}</a>
+                                    <a
+                                        (click)="speedSetPointStateAndOldState(contraint.id, contraint.coordonateX, contraint.coordonateY)">
+                                        ↩️</a>
+                                </p>
+
+                                <p *ngIf='contraint.type == "priority_up"'>
+                                    <span *ngIf='getModifState(contraint.id, "priority_up") == true'>⏫ Augmentation de la priorité à
+                                    </span>
+                                    <span *ngIf='getModifState(contraint.id, "priority_up") == false'>⏫ Ancienne priorité de la route à
+                                    </span>
+                                    <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}},
+                                        {{contraint.coordonateY.toString().slice(0,7)}}</a>
+                                    <a
+                                        (click)="priorityUpSetPointStageAndOldState(contraint.id, contraint.coordonateX, contraint.coordonateY)">
+                                        ↩️</a>
+                                </p>
+
+                                <p *ngIf='contraint.type == "priority_down"'>
+                                    <span *ngIf='getModifState(contraint.id, "priority_down") == true'>⏬ Priorité de la route baissé à
+                                    </span>
+                                    <span *ngIf='getModifState(contraint.id, "priority_down") == false'>⏬ Ancienne priorité de la route à
+                                    </span>
+                                    <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}},
+                                        {{contraint.coordonateY.toString().slice(0,7)}}</a>
+                                    <a
+                                        (click)="priorityDownSetPointStageAndOldState(contraint.id, contraint.coordonateX, contraint.coordonateY)">
+                                        ↩️</a>
+                                </p>
+
+                                <p *ngIf='contraint.type == "traffic_light"'>
+                                    <span *ngIf='getModifState(contraint.id, "trafficlight") == true'>🚦 Changement des cycles du feux à
+                                    </span>
+                                    <span *ngIf='getModifState(contraint.id, "trafficlight") == false'>🚦 Ancien cyle du feu à </span>
+                                    <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}},
+                                        {{contraint.coordonateY.toString().slice(0,7)}}</a>
+                                    <a
+                                        (click)="tlSetPointStageAndOldState(contraint.id, contraint.coordonateX, contraint.coordonateY)">
+                                        ↩️</a>
+                            <li *ngFor="let cycle of (getModifState(contraint.id, 'trafficlight') == true ? contraint.value['newTlCycle']: contraint.oldValue['newTlCycle'])"
+                                style="margin-left: 5%;">cycle numéro {{cycle["cycleNb"]}}, durée :
+                                {{cycle["duration"]}} secondes. <a
+                                    (click)="changeCycle(contraint.id, cycle['cycleNb'])"> {{cycle["dispBool"] == 0 ?
+                                    'open' : 'close'}}</a>
+                                <p *ngIf="cycle['dispBool']">
+                            <li *ngFor="let direction of cycle['detail']" style="margin-left: 5%">De la route
+                                {{direction["fromNode"]}} à la route {{direction["toNode"]}}
+                                <span style="height: 25px; width: 25px; border-radius: 50%; display: inline-block"
+                                    [style.background]="direction['color'] == 'vert' ? 'green' : 'yellow'"></span>
+                            </li>
+                            </p>
+                            </li>
+                            </p>
+                            </li>
+                        </ul>
+                        <p>
+                            <label *ngIf="this.graphicTrip || this.graphicRoad"
+                                class="label has-text-white mt-5">Graphique d'amélioration</label>
+                            <img *ngIf="this.graphicTrip" style="max-width: 50%; height: auto; padding: 5px;"
+                                src="{{this.graphicTrip}}" alt="graphique">
+                            <img *ngIf="this.graphicRoad" style="max-width: 50%; height: auto; padding: 5px;"
+                                src="{{this.graphicRoad}}" alt="graphique">
+                        </p>
+
+                        <div class="mt-5" style="display: flex; justify-content: flex-end;">
+                            <button class="button has-text-weight-semibold px-5"
+                                style="background: #3724b6; border-radius: 16px; border-color: #3724b6; color: white"
+                                (click)="downloadPDF()" *ngIf="project.status == 'finished'">Télécharger le PDF<i
+                                    class='bx bxs-file-pdf ml-1'></i></button>
+                            <button class="button has-text-weight-semibold px-5 ml-2"
+                                style="background: white; border-radius: 16px; color: #3724b6;"
+                                (click)="doCopy()" *ngIf="project.status == 'finished'">Partager<i
+                                    class='bx bxs-share ml-2'></i></button>
+                        </div>
+                    </div>
                 </div>
-              </li>
-              <li *ngIf='project.status == "created"' class="steps-segment is-active">
-                <span class="steps-marker"></span>
-                <div class="steps-content">
-                  <p class="subtitle is-6 has-text-white">Création</p>
+                <div class="column is-6 map p-0" id="map" style="border-radius: 24px;">
                 </div>
-              </li>
-              <li *ngIf='project.status != "running"' class="steps-segment">
-                <span class="steps-marker"></span>
-                <div class="steps-content">
-                  <p class="subtitle is-6 has-text-white">Execution</p>
-                </div>
-              </li>
-              <li *ngIf='project.status == "running"' class="steps-segment is-active">
-                <span class="steps-marker"></span>
-                <div class="steps-content">
-                  <p class="subtitle is-6 has-text-white">Execution</p>
-                </div>
-              </li>
-              <li *ngIf='project.status != "ended"' class="steps-segment">
-                <span class="steps-marker"></span>
-                <div class="steps-content">
-                  <p class="subtitle is-6 has-text-white">Vérification</p>
-                </div>
-              </li>
-              <li *ngIf='project.status == "ended"' class="steps-segment is-active">
-                <span class="steps-marker"></span>
-                <div class="steps-content">
-                  <p class="subtitle is-6 has-text-white">Vérification</p>
-                </div>
-              </li>
-              <li *ngIf='project.status == "finished"' class="steps-segment is-active">
-                <span class="steps-marker"></span>
-                <div class="steps-content">
-                  <p class="subtitle is-6 has-text-white">Terminé</p>
-                </div>
-              </li>
-              <li *ngIf='project.status != "finished"' class="steps-segment">
-                <span class="steps-marker"></span>
-                <div class="steps-content">
-                  <p class="subtitle is-6 has-text-white">Terminé</p>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <br>
-
-          <div class="field px-6 mt-3 has-text-white">
-            <label class="label has-text-white">Liste des Contraintes ({{project.contraints.length}}) <span class="has-text-weight-normal is-clickable is-hoverable has-text-info" (click)="displayConstraints()" *ngIf="project.contraints.length > 0"><span *ngIf='constraints.displayed == false'> - Voir </span> <span *ngIf='constraints.displayed == true'> - Cacher </span>la liste complète</span></label> 
-            <ul  *ngIf='constraints.displayed == true'>
-              <li *ngFor="let contraint of project.contraints;">
-                <p *ngIf='contraint.type == "trafficlight"'>🚦 Feu de Signalisation à
-                  {{contraint.latitude.toString().slice(0,10)}}, {{contraint.longitude.toString().slice(0,10)}}</p>
-                <p *ngIf='contraint.type == "stop"'>🛑 Panneau Stop à {{contraint.latitude.toString().slice(0,10)}},
-                  {{contraint.longitude.toString().slice(0,10)}}</p>
-                <p *ngIf='contraint.type == "yield"'>🔻 Cédez le Passage à
-                  {{contraint.latitude.toString().slice(0,10)}}, {{contraint.longitude.toString().slice(0,10)}}</p>
-                <p *ngIf='contraint.type == "roundabout"'>🔄 Carrefour à sens giratoire à
-                  {{contraint.latitude.toString().slice(0,10)}}, {{contraint.longitude.toString().slice(0,10)}}</p>
-              </li>
-            </ul>
-          </div>
-
-
-
-          <div class="field px-6 mt-3 has-text-white" *ngIf='project.status == "finished"'>
-            <label class="label has-text-white">Résultats ({{project.results.length}})</label>
-            <ul>
-              <li *ngFor="let contraint of project.results;">
-                <p *ngIf='contraint.type == "sign" && contraint.value == "redlight"'>🚦 Feu de Signalisation à
-                  <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</a></p>
-
-                  <p *ngIf='contraint.type == "sign" && contraint.value == "priority_stop"'>
-                  <span *ngIf='getModifState(contraint.id, "sign") == true'>🛑 Nouveau Panneau Stop à </span>
-                  <span *ngIf='getModifState(contraint.id, "sign") == false'>🛑 Ancien {{getSignOldModif(contraint.id)}} à </span>
-                  <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</a>
-                  <a (click)="signSetPointStateAndOldState(contraint.id, contraint.coordonateX, contraint.coordonateY)"> ↩️</a>
-                </p>
-                <p *ngIf='contraint.type == "sign" && contraint.value == "right_before_left"'>
-                  <span *ngIf='getModifState(contraint.id, "sign") == true'>🔺 Nouveau panneau priorité à droite à </span>
-                  <span *ngIf='getModifState(contraint.id, "sign") == false'>🔺 Ancien {{getSignOldModif(contraint.id)}} à </span>
-                  <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</a>
-                  <a (click)="signSetPointStateAndOldState(contraint.id, contraint.coordonateX, contraint.coordonateY)"> ↩️</a>
-                </p>
-                <p *ngIf='contraint.type == "sign" && contraint.value == "priority"'>
-                  <span *ngIf='getModifState(contraint.id, "priority") == true'>🔺 Nouveau panneau priorité à </span>
-                  <span *ngIf='getModifState(contraint.id, "priority") == false'>🔺 Ancien {{getSignOldModif(contraint.id)}} à </span>
-                  <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</a>
-                  <a (click)="signSetPointStateAndOldState(contraint.id, contraint.coordonateX, contraint.coordonateY)"> ↩️</a>
-                </p>
-
-                <p *ngIf='contraint.type == "yield"'>🔻 Cédez le Passage à 
-                  <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.latitude.toString().slice(0,7)}}, {{contraint.longitude.toString().slice(0,7)}}</a></p>
-                <p *ngIf='contraint.type == "roundabout"'>🔄 Carrefour à sens giratoire à 
-                  <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.latitude.toString().slice(0,7)}}, {{contraint.longitude.toString().slice(0,7)}}</a></p>
-
-                <p *ngIf='contraint.type == "speed"' >🕛 {{getModifState(contraint.id, "speed") ? "Nouvelle vitesse limité " : "Ancienne vitesse limité à " }}
-                  {{(getModifState(contraint.id, "speed") == true) ? (contraint.value * 3.6 ).toFixed(0): (contraint.oldValue * 3.6).toFixed(0)}} km/h à
-                  <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</a>
-                  <a (click)="speedSetPointStateAndOldState(contraint.id, contraint.coordonateX, contraint.coordonateY)"> ↩️</a>
-                </p>
-
-                <p *ngIf='contraint.type == "priority_up"'>
-                  <span *ngIf='getModifState(contraint.id, "priority_up") == true'>⏫ Augmentation de la priorité à </span>
-                  <span *ngIf='getModifState(contraint.id, "priority_up") == false'>⏫ Ancienne priorité de la route à </span>
-                  <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</a>
-                  <a (click)="priorityUpSetPointStageAndOldState(contraint.id, contraint.coordonateX, contraint.coordonateY)"> ↩️</a>
-                </p>
-
-                <p *ngIf='contraint.type == "priority_down"' >
-                  <span *ngIf='getModifState(contraint.id, "priority_down") == true'>⏬ Priorité de la route baissé à </span>
-                  <span *ngIf='getModifState(contraint.id, "priority_down") == false'>⏬ Ancienne priorité de la route à </span>
-                  <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</a>
-                  <a (click)="priorityDownSetPointStageAndOldState(contraint.id, contraint.coordonateX, contraint.coordonateY)"> ↩️</a>
-                </p>
-
-                <p *ngIf='contraint.type == "traffic_light"' >
-                  <span *ngIf="getModifState(contraint.id, 'traffic_light') == true">🚦 Changement des cycles du feux à </span>
-                  <span *ngIf="getModifState(contraint.id, 'traffic_light') == false">🚦 Ancien cyle du feu à </span>
-                  <a (click)="zoomToPoint(contraint.coordonateX, contraint.coordonateY)">{{contraint.coordonateX.toString().slice(0,7)}}, {{contraint.coordonateY.toString().slice(0,7)}}</a>
-                  <a (click)="tlSetPointStageAndOldState(contraint.id, contraint.coordonateX, contraint.coordonateY)"> ↩️</a>
-                  <li *ngFor="let cycle of (getModifState(contraint.id, 'traffic_light') == true ? contraint.value['newTlCycle']: contraint.oldValue['newTlCycle'])" style="margin-left: 5%;" >cycle numéro {{cycle["cycleNb"]}}, durée : {{cycle["duration"]}} secondes. <a (click)="changeCycle(contraint.id, cycle['cycleNb'])"> {{getCycleDispValue(contraint.id, cycle['cycleNb'] - 1) == 0 ? 'open' : 'close'}}</a>
-                    <p *ngIf="cycle['dispBool']">
-                      <li *ngFor="let direction of cycle['detail']" style="margin-left: 5%">De la route {{direction["fromNode"]}} à la route {{direction["toNode"]}}
-                      <span style="height: 25px; width: 25px; border-radius: 50%; display: inline-block" [style.background]="direction['color'] == 'vert' ? 'green' : 'yellow'"></span></li>
-                    </p>
-                  </li>
-                </p>
-              </li>
-            </ul>
-            <p>
-            <label *ngIf="this.graphicTrip || this.graphicRoad" class="label has-text-white mt-5">Graphique d'amélioration</label>
-              <img *ngIf="this.graphicTrip" style="max-width: 50%; height: auto; padding: 5px;" src="{{this.graphicTrip}}" alt="graphique">
-              <img *ngIf="this.graphicRoad"style="max-width: 50%; height: auto; padding: 5px;" src="{{this.graphicRoad}}" alt="graphique">
-            </p>
-          </div>
+            </div>
         </div>
-        <div class="column is-6 map p-0" id="map" style="border-radius: 24px;">
-        </div>
-      </div>
     </div>
-  </div>
 </div>
