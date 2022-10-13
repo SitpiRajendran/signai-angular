@@ -1,58 +1,65 @@
 <div class="columns m-0 p-0" style="background: #161616; width: 100%; height: 100%">
- <app-menu class="column is-2" style="display: flex; flex-direction: column; justify-content: space-between;"
-  [contact_name]="'Sitpi RAJENDRAN'" [contact_mail]="'sitpi.rajendran@signai.fr'"
-  [contact_telephone]="'+33.6.68.62.99.53'"></app-menu>
- <div class="column is-10">
-  <div class="side-box">
-   <div class="columns m-0 p-0" style="width: 100%; height: 100%;">
-    <div class="column is-6">
-     <p class="title is-4 has-text-white pt-6 pl-6">Mon Compte</p>
-     <div class="field px-6 mt-4">
-      <label class="label has-text-white">Prénom et Nom</label>
-      <div class="control">
-       <input class="input" style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;"
-        type="text" value="{{userinfo.firstname}} {{userinfo.name}}" disabled>
-      </div>
-     </div>
-     <div class="field px-6 ">
-      <label class="label has-text-white">Email</label>
-      <div class="control">
-       <input class="input" style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;"
-        type="text" value="{{userinfo.email}}" disabled>
-      </div>
-     </div>
-     <div class="field px-6 ">
-      <label class="label has-text-white">Numéro de téléphone</label>
-      <div class="control">
-       <input class="input" style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;"
-        type="text" value="{{userinfo.phone}}" disabled>
-      </div>
-     </div>
-     <div class="field px-6 ">
-      <label class="label has-text-white">Entreprise</label>
-      <div class="control">
-       <input class="input" style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;"
-        type="text" value="{{userinfo.company}}" disabled>
-      </div>
-     </div>
-     <div class="field px-6 ">
-      <label class="label has-text-white">Type de Compte</label>
-      <div class="control">
-       <input class="input" style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;"
-        type="text" value="{{userinfo.type}}" disabled>
-      </div>
-     </div>
-
-     <button class="button has-text-weight-bold"
-      style="width: 200px; background: #2C1F81; border-radius: 5px; border-color: #2C1F81; color: white; margin-left: 60%; margin-top: 25%;">SUIVANT
-      -></button>
-
-    </div>
-    <div class="column is-6 map p-0 mt-6" style="border-radius: 24px;">
-     <label class="label has-text-white mt-4 pt-6">Actions sur mon compte</label>
-     <a href="/disconnect"><p class="button is-danger has-text-white mb-4">Se déconnecter</p></a>
-     <a href="/moncompte"><p class="has-text-white">Téléchargez toutes les données de mon compte</p></a>
-     <a href="/moncompte"><p class="has-text-danger">Supprimer toutes les informations me concernant</p></a>
-    </div>
-   </div>
-  </div>
+    <app-menu class="column is-2" style="display: flex; flex-direction: column; justify-content: space-between;"
+        [contact_name]="'Sitpi RAJENDRAN'" [contact_mail]="'sitpi.rajendran@signai.fr'"
+        [contact_telephone]="'+33.6.68.62.99.53'" [account_type]="'Epitech'"></app-menu>
+    <div class="column is-10 p-0">
+        <div class="side-box">
+            <div class="columns m-0 p-0" style="width: 100%; height: 100%;">
+                <div class="column is-6">
+                    <p class="title is-4 has-text-white pt-6 pl-6">Mon Compte</p>
+                    <div class="field px-6 mt-4">
+                        <label class="label has-text-white">Prénom et Nom</label>
+                        <div class="control">
+                            <input class="input"
+                                style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;"
+                                type="text" value="{{userinfo.firstname}} {{userinfo.name}}" disabled>
+                        </div>
+                    </div>
+                    <div class="field px-6 ">
+                        <label class="label has-text-white">Email</label>
+                        <div class="control">
+                            <input class="input"
+                                style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;"
+                                type="text" value="{{userinfo.email}}" disabled>
+                        </div>
+                    </div>
+                    <div class="field px-6 ">
+                        <label class="label has-text-white">Numéro de téléphone</label>
+                        <div class="control">
+                            <input class="input"
+                                style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;"
+                                type="text" value="{{userinfo.phone}}" disabled>
+                        </div>
+                    </div>
+                    <div class="field px-6 ">
+                        <label class="label has-text-white">Entreprise</label>
+                        <div class="control">
+                            <input class="input"
+                                style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;"
+                                type="text" value="{{userinfo.company}}" disabled>
+                        </div>
+                    </div>
+                    <div class="field px-6 ">
+                        <label class="label has-text-white">Type de Compte</label>
+                        <div class="control">
+                            <input class="input"
+                                style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;"
+                                type="text" value="{{userinfo.type}}" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-6 map p-0 mt-6" style="border-radius: 24px;">
+                    <label class="label has-text-white mt-4 pt-6">Actions sur mon compte</label>
+                    <a href="/disconnect">
+                        <p class="button is-danger has-text-white mb-4" style="border-radius: 16px"><i
+                                class='bx bxs-door-open mr-3'></i>Se déconnecter</p>
+                    </a>
+                    <a href="/moncompte">
+                        <p class="has-text-white">Téléchargez toutes les données de mon compte</p>
+                    </a>
+                    <a href="/moncompte">
+                        <p class="has-text-danger">Supprimer toutes les informations me concernant</p>
+                    </a>
+                </div>
+            </div>
+        </div>

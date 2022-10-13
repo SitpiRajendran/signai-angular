@@ -2,12 +2,12 @@
 <div class="columns m-0 p-0" style="background: #161616; width: 100%; height: 100%">
     <app-menu class="column is-2" style="display: flex; flex-direction: column; justify-content: space-between;"
         [contact_name]="'Sitpi RAJENDRAN'" [contact_mail]="'sitpi.rajendran@signai.fr'"
-        [contact_telephone]="'+33.6.68.62.99.53'"></app-menu>
-    <div class="column is-10">
+        [contact_telephone]="'+33.6.68.62.99.53'" [account_type]="'Epitech'"></app-menu>
+    <div class="column is-10 p-0">
         <div class="side-box">
             <div class="columns m-0 p-0" style="width: 100%; height: 100%;">
-                <div class="column is-6">
-                        <p class="title is-4 has-text-white pt-6 pl-6">Demande de Projet</p>
+                <div class="column is-6" style=" overflow-y: scroll;">
+                        <p class="title is-4 has-text-white pt-6 pl-6">Demande de Projet - Étape 1/2</p>
                         <div class="field px-6 mt-4">
                             <label class="label has-text-white">Nom du Projet</label>
                             <div class="control">
@@ -19,7 +19,7 @@
                         <div class="field px-6 mt-4">
                             <label class="label has-text-white">Description</label>
                             <div class="control">
-                                <input class="input"
+                                <input class="input textarea"
                                     style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;"
                                     type="textarea" placeholder="" #description>
                             </div>
@@ -59,8 +59,10 @@
                                     max="600" required #radius>
                             </div>
                         </div>
-                        <button class="button has-text-weight-bold"
-                            style="width: 200px; background: #2C1F81; border-radius: 5px; border-color: #2C1F81; color: white; margin-left: 60%; margin-top: 10%;" (click)="createProject1(name.value, postalcode.value, city.value, address.value, radius.value, description.value)">SUIVANT -></button>
+                        <div class="field px-6" style="display: flex; justify-content: flex-end;">
+                            <button class="button has-text-weight-semibold px-5 mt-1"
+                            style="background: #3724b6; border-radius: 16px; border-color: #3724b6; color: white;" (click)="createProject1(name.value, postalcode.value, city.value, address.value, radius.value, description.value)">ÉTAPE 2 -></button>
+                        </div>
                 </div>
                 <div class="column is-6 map p-0" style="border-radius: 24px;">
                 </div>

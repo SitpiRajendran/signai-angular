@@ -1,74 +1,71 @@
 <div class="columns m-0 p-0" style="background: #161616; width: 100%; height: 100%">
     <app-menu class="column is-2" style="display: flex; flex-direction: column; justify-content: space-between;"
         [contact_name]="'Sitpi RAJENDRAN'" [contact_mail]="'sitpi.rajendran@signai.fr'"
-        [contact_telephone]="'+33.6.68.62.99.53'"></app-menu>
-    <div class="column is-10">
+        [contact_telephone]="'+33.6.68.62.99.53'" [account_type]="'Epitech'"></app-menu>
+    <div class="column is-10 p-0">
         <div class="side-box">
             <div style="display: flex; justify-content: space-between;">
                 <p class="title is-4 has-text-white pt-6 pl-6">Dashboard</p>
-                <a href="/demande1"><button class="button has-text-weight-bold mt-6 mr-6"
-                        style="width: 200px; background: white; border-radius: 5px;  color: black">+ Demande de
+                <a href="/demande1"><button class="button has-text-weight-semibold px-5 mt-6 mr-6"
+                        style="background: white; border-radius: 16px;  color: black">+ Demande de
                         Projet</button></a>
             </div>
-            <div class="sub-box ml-2 mr-6 mt-2">
-                <p class="subtitle is-5 has-text-white px-6">Mes projets en cours</p>
-                <div class="columns is-multiline pl-6 ml-1">
-                    <div *ngFor="let project of projectlist" class="column is-3">
-                        <div
-                            style="background: conic-gradient(from 180deg at 50% 50%, rgba(255, 0, 0, 0) -0.31deg, #c0bd00 0.74deg, rgba(255, 0, 0, 0) 359.69deg, #bbff00 360.74deg), #ff3c00; border-radius: 14px;" class="p-3">
-                            <a *ngIf="project.status != 'finished'" class="mb-3 is-clickable "
-                                href="/details/{{project._id}}">
-                                <p class="title is-6 pt-2" style="text-align: center; color: #FFFFFF;">
-                                    {{project.name}}</p>
-                                <div style="display: flex;justify-content: space-between; ">
-                                    <p class="has-text-white is-size-8">{{project.createdAt.slice(0,10)}}</p>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <p  *ngIf="projectlist.length == 0">Aucun projet en cours</p>
+            <div>
+                <div class="has-background-grey-light ml-6" style="border-radius: 16px; display: flex; flex-direction: row; justify-content: space-around; align-items: center; width: 20%; height:45px;">
+                    <div>En cours</div>
+                    <div>Terminé</div>
+                </div>
+                <div class="has-background-white has-text-black" style="border: 2px solid #3724b6; border-radius: 16px; width: 10%; position: relative; top: -47px; left: 47px; padding: 10px; text-align: center; box-shadow: 1px 1px 20px 0px #000000;">
+                    En cours
                 </div>
             </div>
-            <div class="sub-box ml-2 mr-6 mt-6">
-                <p class="subtitle is-5 has-text-white px-6">Mes projets terminées</p>
-<!--                 <div class="columns is-multiline pl-6 ml-1">
-                    <div class="column is-2 mr-5 mb-3"
-                        style="background: conic-gradient(from 180deg at 50% 50%, rgba(255, 0, 0, 0) -0.31deg, #4bcc00 0.74deg, rgba(255, 0, 0, 0) 359.69deg, #739c00 360.74deg), #036600; border-radius: 14px;">
-                        <p class="title is-6 pt-2" style="text-align: center; color: #FFFFFF;">
-                            PLACE VENDÔME</p>
-                        <div style="display: flex;justify-content: space-between; ">
-                            <p class="has-text-white is-size-8">12/03/11</p>
-                            <p class="has-text-white is-size-8">12/03/11</p>
-                        </div>
-                    </div>
-                    <div class="column is-2 mr-5 mb-3"
-                        style="background: conic-gradient(from 180deg at 50% 50%, rgba(255, 0, 0, 0) -0.31deg, #e2008b 0.74deg, rgba(4, 0, 255, 0) 359.69deg, #cc279a 360.74deg), #7940c4; border-radius: 14px;">
-                        <p class="title is-6 pt-2" style="text-align: center; color: #FFFFFF;">
-                            PLACE VENDÔME</p>
-                        <div style="display: flex;justify-content: space-between; ">
-                            <p class="has-text-white is-size-8">12/03/11</p>
-                            <p class="has-text-white is-size-8">12/03/11</p>
-                        </div>
-                    </div>
-                </div> -->
-                <div class="columns is-multiline pl-6 ml-1">
-                    <div *ngFor="let project of finishedproject" class="column is-3">
-                        <div
-                        style="background: conic-gradient(from 180deg at 50% 50%, rgba(255, 0, 0, 0) -0.31deg, #4d00c0 0.74deg, rgba(255, 0, 0, 0) 359.69deg, #ff0095 360.74deg), #ff0090; border-radius: 14px;" class="p-3">
-                        <a class="mb-3 is-clickable "
-                            href="/details/{{project._id}}">
-                            <p class="title is-6 pt-2" style="text-align: center; color: #FFFFFF;">
+            <div class="sub-box mr-6 mt-2">
+                <p class="subtitle is-5 has-text-white px-6">Mes projets en cours</p>
+                <div class="columns is-multiline pl-6 ml-0">
+                    <div *ngFor="let project of projectlist" style="background: white; border-radius: 14px;"
+                        class="column is-3 p-3 projectbox-now mr-5 mb-5 is-clickable">
+                        <a href="/details/{{project._id}}">
+                            <p class="has-text-grey is-size-8 mt-2">Créé le {{project.createdAt.slice(0,10)}}</p>
+                            <p class="title is-6 pt-1" style="text-align: left; color: #ff8400;">
                                 {{project.name}}</p>
-                            <div style="display: flex;justify-content: space-between; ">
-                                <p class="has-text-white is-size-8">{{project.createdAt.slice(0,10)}}</p>
-                                <p class="has-text-white is-size-8">{{project.updatedAt.slice(0,10)}}</p>
-                            </div>
+                            <p class="has-text-grey is-size-8" style="text-align: right;"
+                                *ngIf="datediff(parseDate(this.todayDate), parseDate(project.updatedAt.slice(0,10))) == 0">
+                                Edité aujourd'hui</p>
+                            <p class="has-text-grey is-size-8" style="text-align: right;"
+                                *ngIf="datediff(parseDate(this.todayDate), parseDate(project.updatedAt.slice(0,10))) == 1">
+                                Edité hier</p>
+                            <p class="has-text-grey is-size-8" style="text-align: right;"
+                                *ngIf="datediff(parseDate(this.todayDate), parseDate(project.updatedAt.slice(0,10))) > 1">
+                                Edité il y'a {{ datediff(parseDate(this.todayDate),
+                                parseDate(project.updatedAt.slice(0,10)))}} jours</p>
                         </a>
                     </div>
-                    </div>
-                    </div>
-                    <p class="ml-6" *ngIf="projectlist.length == 0">Aucun projet en cours</p>
+                    <p *ngIf="projectlist.length == 0">Aucun projet en cours</p>
                 </div>
+            </div>
+            <div class="sub-box mr-6 mt-6">
+                <p class="subtitle is-5 has-text-white px-6">Mes projets terminés</p>
+                <div class="columns is-multiline pl-6 ml-0">
+                    <div *ngFor="let project of finishedproject" style="background: white; border-radius: 14px;"
+                        class="column is-3 p-3 projectbox mr-5 mb-5 is-clickable">
+                        <a href="/details/{{project._id}}">
+                            <p class="has-text-grey is-size-8 mt-2">Créé le {{project.createdAt.slice(0,10)}}</p>
+                            <p class="title is-6 pt-1" style="text-align: left; color: #3724b6;"> {{project.name}}</p>
+                            <p class="has-text-grey is-size-8" style="text-align: right;"
+                                *ngIf="datediff(parseDate(this.todayDate), parseDate(project.updatedAt.slice(0,10))) == 0">
+                                Édité aujourd'hui</p>
+                            <p class="has-text-grey is-size-8" style="text-align: right;"
+                                *ngIf="datediff(parseDate(this.todayDate), parseDate(project.updatedAt.slice(0,10))) == 1">
+                                Édité hier</p>
+                            <p class="has-text-grey is-size-8" style="text-align: right;"
+                                *ngIf="datediff(parseDate(this.todayDate), parseDate(project.updatedAt.slice(0,10))) > 1">
+                                Édité il y a {{ datediff(parseDate(this.todayDate),
+                                parseDate(project.updatedAt.slice(0,10)))}} jours</p>
+                        </a>
+                    </div>
+                </div>
+                <p class="ml-6" *ngIf="finishedproject.length == 0">Aucun projet en cours</p>
             </div>
         </div>
     </div>
+</div>
