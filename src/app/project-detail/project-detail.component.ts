@@ -497,7 +497,7 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   doCopy () {
-    var target = this.dataset.target;
+/*     var target = this.dataset.target;
     var fromElement = document.querySelector(target);
     if(!fromElement) return;
 
@@ -506,6 +506,6 @@ export class ProjectDetailComponent implements OnInit {
     range.selectNode(fromElement);
     selection.removeAllRanges();
     selection.addRange(range);
-
+ */
   }
 }
