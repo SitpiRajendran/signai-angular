@@ -263,6 +263,20 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   displayConstraints() {
+    var request = new XMLHttpRequest();
+
+    request.onreadystatechange = function() {
+      if (request.readyState == XMLHttpRequest.DONE) {
+          console.log(request.responseText);
+      }
+    }
+
+    // request.open('GET', 'https://nominatim.openstreetmap.org/reverse?lat=&lon=zoom=16', true);
+    // request.setRequestHeader('Access-Control-Allow-Origin', "*");
+    // request.setRequestHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    // request.setRequestHeader('Access-Control-Allow-Headers', 'Content-Type');
+    // request.send(null);
+
     this.constraints.displayed = true;
     this.project.contraints.forEach((point: { latitude: string; longitude: string ; type: string;}) => {
       this.addPoint(+point.latitude, +point.longitude, point.type, "constraint");
