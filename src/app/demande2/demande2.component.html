@@ -2,29 +2,35 @@
 <div class="columns m-0 p-0" style="background: #161616; width: 100%; height: 100%">
     <app-menu class="column is-2" style="display: flex; flex-direction: column; justify-content: space-between;"
         [contact_name]="'Sitpi RAJENDRAN'" [contact_mail]="'sitpi.rajendran@signai.fr'"
-        [contact_telephone]="'+33.6.68.62.99.53'"></app-menu>
-    <div class="column is-10">
+        [contact_telephone]="'+33.6.68.62.99.53'" [account_type]="'Epitech'"></app-menu>
+    <div class="column is-10 p-0" style="background: #1A1C20;">
         <div class="side-box">
             <div class="columns m-0 p-0" style="width: 100%; height: 100%;">
-                <div class="column is-6">
+                <div class="column is-6" style=" overflow-y: scroll;">
                     <p class="title is-4 has-text-white pt-6 pl-6">Demande de Projet - {{this.name}}</p>
                     <div class="field px-6 mt-4">
-                        <label class="label has-text-white">Nouveau rayon d'action</label>
-                        <div class="control">
-                            <input class="input"
-                                style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;"
-                                type="number" placeholder="" min="20"
-                                max="1000" required #radius>
-                        </div>
-                        <button class="button has-text-weight-bold"
-                                style="width: 250px; background: white; border-radius: 5px; border-color:white; color: #22252C; margin-left: 50%; margin-top: 1%"
+                        <label class="label has-text-white">Indiquez un nouveau rayon d'action
+                            <span class="has-text-grey is-size-7">optionel</span>
+                        </label>
+                        <div class="field has-addons">
+                            <div class="control is-expanded">
+                                <input class="input"
+                                    style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;;"
+                                    type="number" placeholder="" min="300" max="600" required #radius>
+                            </div>
+                            <div class="control ml-3">
+                                <button class="button has-text-weight-semibold px-5"
+                                style="background: white; border-radius: 16px; border-color:white; color: #22252C; margin-left: 1%;"
                                 (click)="changeRadius(radius.value)">Changer le rayon d'action</button>
+                            </div>
+                        </div>
                     </div>
                     <div class="field px-6 mt-4">
                         <label class="label has-text-white">Types de Contraintes</label>
                         <div class="select is-fullwidth">
                             <select id="contstrainttype"
-                                style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;" (change)="changeSelect()">
+                                style="background: #22252C; border-radius: 5px; border-color: #22252C; color: white;"
+                                (change)="changeSelect()">
                                 <option value="trafficlight">🚦 Feu de Signalisation</option>
                                 <option value="stop">🛑 Panneau Stop</option>
                                 <option value="yield">🔻 Cédez le Passage</option>
@@ -73,29 +79,34 @@
                                 type="textarea" placeholder="" id="contstraintdesc">
                         </div>
                     </div>
-                    <button class="button has-text-weight-bold"
-                        style="width: 250px; background: white; border-radius: 5px; border-color:white; color: #22252C; margin-left: 50%; margin-top: 1%"
+                    <button class="button has-text-weight-semibold px-5"
+                        style="background: white; border-radius: 16px; border-color:white; color: #22252C; margin-left: 50%; margin-top: 1%"
                         (click)="addInList()">Ajouter la contrainte +</button>
 
                     <div class="field px-6 mt-3 has-text-white">
                         <label class="label has-text-white">Listes des Contraintes ({{contraintList.length}})</label>
-                        <ul style="height: 120px;overflow: auto;">
+                        <ul style="overflow: auto;">
                             <li *ngFor="let contraint of this.contraintList;">
-                                <p *ngIf=" contraint.type=='trafficlight'">🚦 Feu de Signalisation à {{contraint.latitude.slice(0,10)}}, {{contraint.longitude.slice(0,10)}}</p>
-                                <p *ngIf=" contraint.type=='stop'">🛑 Panneau Stop à {{contraint.latitude.slice(0,10)}}, {{contraint.longitude.slice(0,10)}}</p>
-                                <p *ngIf=" contraint.type=='yield'">🔻 Cédez le Passage à {{contraint.latitude.slice(0,10)}}, {{contraint.longitude.slice(0,10)}}</p>
-                                <p *ngIf=" contraint.type=='roundabout'">🔄 Carrefour à sens giratoire à {{contraint.latitude.slice(0,10)}}, {{contraint.longitude.slice(0,10)}}</p>
+                                <p *ngIf=" contraint.type=='trafficlight'">🚦 Feu de Signalisation à
+                                    {{contraint.latitude.slice(0,10)}}, {{contraint.longitude.slice(0,10)}}</p>
+                                <p *ngIf=" contraint.type=='stop'">🛑 Panneau Stop à {{contraint.latitude.slice(0,10)}},
+                                    {{contraint.longitude.slice(0,10)}}</p>
+                                <p *ngIf=" contraint.type=='yield'">🔻 Cédez le Passage à
+                                    {{contraint.latitude.slice(0,10)}}, {{contraint.longitude.slice(0,10)}}</p>
+                                <p *ngIf=" contraint.type=='roundabout'">🔄 Carrefour à sens giratoire à
+                                    {{contraint.latitude.slice(0,10)}}, {{contraint.longitude.slice(0,10)}}</p>
                             </li>
                         </ul>
                     </div>
-                <button class="button has-text-weight-bold"
-                                    style="width: 200px; background: #2C1F81; border-radius: 5px; border-color: #2C1F81; color: white; margin-left: 60%;" (click)="sendCreation()">Terminer
-                                    la demande</button>
+                    <button class="button has-text-weight-semibold px-5"
+                        style="background: #3724b6; border-radius: 16px; border-color: #3724b6; color: white; margin-left: 60%;"
+                        (click)="sendCreation()">Terminer
+                        la demande</button>
 
-                    </div>
-                    <div class="column is-6 map p-0" id="map" style="border-radius: 24px;">
-                    </div>
+                </div>
+                <div class="column is-6 map p-0" id="map" style="border-radius: 24px;">
                 </div>
             </div>
         </div>
     </div>
+</div>
