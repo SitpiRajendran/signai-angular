@@ -17,6 +17,7 @@ export class Demande2Component implements OnInit {
   postalcode: string = '';
   city: string = '';
   address: string = '';
+  observators: string = '';
   radius: number = 0;
 
   latitude: number = 0;
@@ -45,6 +46,7 @@ export class Demande2Component implements OnInit {
     this.city = this.route.snapshot.paramMap.get('city')!;
     this.address = this.route.snapshot.paramMap.get('address')!;
     this.radius = +this.route.snapshot.paramMap.get('radius')!;
+    this.observators = this.route.snapshot.paramMap.get('observators')!;
 
     this.backend
       .getCoordinatesOSM(this.address, this.city, this.postalcode)
@@ -175,7 +177,8 @@ export class Demande2Component implements OnInit {
             this.address + ' ' + this.postalcode + ' ' + this.city,
             this.radius,
             this.contraintList,
-            company
+            company,
+            this.observators,
           )
           .subscribe({
             next: (res) => {
@@ -194,7 +197,7 @@ export class Demande2Component implements OnInit {
     if (radius == "" || parseInt(radius) < 20) {
       return;
     }
-    this.router.navigate(['/demande2', {name: this.name, postalcode: this.postalcode, city: this.city, address: this.address, radius: parseInt(radius), description: this.description}])
+    this.router.navigate(['/demande2', {name: this.name, postalcode: this.postalcode, city: this.city, address: this.address, radius: parseInt(radius), description: this.description, observators: this.observators}])
       .then(() =>
         window.location.reload()
       );

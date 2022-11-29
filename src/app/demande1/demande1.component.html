@@ -24,6 +24,15 @@
                                     type="textarea" placeholder="" #description>
                             </div>
                         </div>
+                        <div class="field px-6 mt-4">
+                            <label class="label has-text-white">Email des observateurs</label>
+                            <div class="control">
+                                <input class="input"
+                                    style="width: 100%; background: #22252C; border-radius: 5px; border-color: #22252C; color: white;"
+                                    type="text" id="observators" placeholder="prénom.nom@entreprise.fr,name.surname@company.com" #observators>
+                            </div>
+                            <p style="font-size: small;">Séparé d'une virgule | Exemple: prénom.nom@entreprise.fr,name.surname@company.com</p>
+                        </div>
                         <div class="field px-6 columns">
                             <div class="column is-4">
                                 <label class="label has-text-white">Code Postal</label>
@@ -61,7 +70,7 @@
                         </div>
                         <div class="field px-6" style="display: flex; justify-content: flex-end;">
                             <button class="button has-text-weight-semibold px-5 mt-1"
-                            style="background: #3724b6; border-radius: 16px; border-color: #3724b6; color: white;" (click)="createProject1(name.value, postalcode.value, city.value, address.value, radius.value, description.value)">ÉTAPE 2 -></button>
+                            style="background: #3724b6; border-radius: 16px; border-color: #3724b6; color: white;" (click)="createProject1(name.value, postalcode.value, city.value, address.value, radius.value, description.value, observators.value)">ÉTAPE 2 -></button>
                         </div>
                 </div>
                 <div class="column is-6 map p-0" style="border-radius: 24px;">

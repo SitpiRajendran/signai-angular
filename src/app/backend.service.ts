@@ -64,7 +64,7 @@ export class BackendService {
     }
 
 
-    createProject(name: string, description: string, departPositionLong: number, departPositionLat: number, departAddress: string, radius: number, contraints: Array<any>, company: string) {
+    createProject(name: string, description: string, departPositionLong: number, departPositionLat: number, departAddress: string, radius: number, contraints: Array<any>, company: string, observators: string) {
         let token = 'Bearer ' + this.cookieService.get('token');
         return this.http.post(this.BACKEND_URL + '/project', {
             name: name,
@@ -75,6 +75,7 @@ export class BackendService {
             radius: radius,
             contraints: contraints,
             company: company,
+            observators: observators.split(','),
         }, { headers: new HttpHeaders({ authorization: token }) });
     }
 
