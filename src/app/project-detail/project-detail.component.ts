@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { BackendService } from '../backend.service';
 import { Title } from '@angular/platform-browser';
-import { ReactiveFormsModule } from '@angular/forms';
-import { cp } from 'fs';
 import jsPDF from "jspdf";
 
 declare var ol: any;

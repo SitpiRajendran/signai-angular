@@ -1,12 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { tap } from "rxjs/operators";
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { BackendService } from '../backend.service';
 import { Title } from '@angular/platform-browser';
-import { ReactiveFormsModule } from '@angular/forms';
-import { cp } from 'fs';
-import jsPDF from "jspdf";
-import { NgxCaptureService } from 'ngx-capture';
 
 declare var ol: any;
 
@@ -15,21 +10,20 @@ declare var ol: any;
   templateUrl: './map-view.component.html',
   styleUrls: ['./map-view.component.sass']
 })
-
 export class MapViewComponent implements OnInit {
 
   projectId: string = '';
   project: any = {}
   map: any;
-  maptext: string = "";
+  graphicTrip: string = '';
+  graphicRoad: string = '';
   layerId: number = 0;
   constraints: any = {};
+  streetName:string = '';
   valueJson: { id: string, oldTlCycle: string, tlCycle: string, oldOrPrev: boolean }[] = [];
   prevAndNewState: { id: string, type: string, state: string, oldState: string, oldOrPrev: boolean }[] = [];
 
-  constructor(private route: ActivatedRoute, private backend: BackendService, private titleService: Title, private captureService: NgxCaptureService) { }
-
-  @ViewChild("screen", { static: true }) screen: any;
+  constructor(private route: ActivatedRoute, private backend: BackendService, private titleService: Title) { }
 
   ngOnInit() {
     this.constraints.displayed = false;
@@ -129,11 +123,11 @@ export class MapViewComponent implements OnInit {
               this.prevAndNewState.push({ "id": point.id, "type": "traffic_light", "state": JSON.stringify(valueJson["newTlCycle"]), "oldState": JSON.stringify(oldValueJson["newTlCycle"]), "oldOrPrev": true })
             }
           });
+          this.getGraphicTrip();
+          this.getGraphicRoad();
         }
         this.titleService.setTitle("Projet " + this.project.name + " - Signai")
- 
-        console.log(this.map)
-//        this.maptext = JSON.stringify(this.map);
+        this.displayConstraints()
       },
       error: (err) => {
         console.error(err);
@@ -246,7 +240,32 @@ export class MapViewComponent implements OnInit {
     this.map.getView().setZoom(18);
   }
 
+  getGraphicTrip() {
+    this.backend.getGraphicsTrip(this.projectId).subscribe({
+      next: (res) => {
+        let data = JSON.parse(JSON.stringify(res))
+        this.graphicTrip = "data:image/png;base64," + data.data;
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
+
+  getGraphicRoad() {
+    this.backend.getGraphicsRoad(this.projectId).subscribe({
+      next: (res) => {
+        let data = JSON.parse(JSON.stringify(res))
+        this.graphicRoad = "data:image/png;base64," + data.data;
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
+
   displayConstraints() {
+    console.log(this.constraints.displayed)
     if (this.constraints.displayed == true) {
       this.constraints.displayed = false;
       var layers = this.map.getLayers().getArray();
@@ -263,9 +282,11 @@ export class MapViewComponent implements OnInit {
     }
     else {
       this.constraints.displayed = true;
-      this.project.contraints.forEach((point: { latitude: string; longitude: string; type: string; }) => {
+      this.project.contraints.forEach((point: { latitude: string; longitude: string; type: string, streetName: string }) => {
         this.addPoint(+point.latitude, +point.longitude, point.type, "constraint");
-        this.constraints.id.push(this.layerId - 1)
+        this.constraints.id.push(this.layerId - 1);
+        console.log(this.project.contraints.streetName);
+        //this.project.contraints.streetName = point.streetName;
       });
     }
   }
@@ -423,7 +444,7 @@ export class MapViewComponent implements OnInit {
     return (cycleJson[cycleNB]["dispBool"])
   }
 
-  getCycleIndex(id: string): number {
+  getCycleIndex(id: string): number{
     let cycleID: number = 0
 
     for (let i = 0; i < this.valueJson.length; i++) {
@@ -491,18 +512,4 @@ export class MapViewComponent implements OnInit {
     }
   }
 
-  img = ""
-  downloadPNG() {
-    this.captureService.getImage(this.screen.nativeElement, true)
-      .pipe(
-        tap(img => {
-          this.img = img
-          console.log(img);
-        })
-      ).subscribe(() => {
-        let blob = new Blob([this.img]);
-        const url = window.URL.createObjectURL(blob);
-        window.open(url);
-      })
-  }
 }

@@ -64,7 +64,7 @@ export class BackendService {
     }
 
     getProjectbyIdMap(id: string) {
-      let token = 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJldGFAdGVzdC5jb20iLCJpYXQiOjE2NjgzNTIyODcsImV4cCI6MTY2ODQzODY4N30.QUAHs0A686-3gH3d8s-BSvLn5PCGRBnA_3yhHqDonk8';
+      let token = 'Bearer ' + '0703f2e13a760df45d5be069a1dc83fe75260919c2105974da47d0148d2173fb82e4e9affdccf26f06dcf093e2099440a3f950cac15d60f2f37a89f003391ac4';
       return this.http.get(this.BACKEND_URL + '/project?id=' + id, {
         headers: new HttpHeaders({ authorization: token }),
       });
