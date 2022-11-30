@@ -63,6 +63,12 @@ export class BackendService {
         );
     }
 
+    getProjectbyIdMap(id: string) {
+      let token = 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJldGFAdGVzdC5jb20iLCJpYXQiOjE2NjgzNTIyODcsImV4cCI6MTY2ODQzODY4N30.QUAHs0A686-3gH3d8s-BSvLn5PCGRBnA_3yhHqDonk8';
+      return this.http.get(this.BACKEND_URL + '/project?id=' + id, {
+        headers: new HttpHeaders({ authorization: token }),
+      });
+    }
 
     createProject(name: string, description: string, departPositionLong: number, departPositionLat: number, departAddress: string, radius: number, contraints: Array<any>, company: string, observators: string) {
         let token = 'Bearer ' + this.cookieService.get('token');
