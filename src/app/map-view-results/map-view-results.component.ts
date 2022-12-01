@@ -6,11 +6,11 @@ import { Title } from '@angular/platform-browser';
 declare var ol: any;
 
 @Component({
-  selector: 'app-map-view',
-  templateUrl: './map-view.component.html',
-  styleUrls: ['./map-view.component.sass']
+  selector: 'app-map-view-results',
+  templateUrl: './map-view-results.component.html',
+  styleUrls: ['./map-view-results.component.sass']
 })
-export class MapViewComponent implements OnInit {
+export class MapViewResultsComponent implements OnInit {
 
   projectId: string = '';
   project: any = {}
@@ -61,6 +61,71 @@ export class MapViewComponent implements OnInit {
             zoom: 17,
           }),
         });
+        if (this.project.status == "finished") {
+          this.project.results.forEach((point: { coordonateX: string; coordonateY: string; type: string; value: string; oldValue: string, id: string; }) => {
+            if (point.type == "sign") {
+              this.addPoint(+point.coordonateX, +point.coordonateY, point.type + "_" + point.value, "sign_" + point.id);
+              this.prevAndNewState.push({ "id": point.id, "type": "sign", "state": point.value, "oldState": point.oldValue, "oldOrPrev": true })
+            }
+            if (point.type == "speed") {
+              var speed = Math.round(Number(point.value) * 3.6);
+              var oldSpeed = Math.round(Number(point.oldValue) * 3.6);
+              this.addPoint(+point.coordonateX, +point.coordonateY, point.type + "_" + speed.toString(), "speed_" + point.id);
+              this.prevAndNewState.push({ "id": point.id, "type": "speed", "state": speed.toString(), "oldState": oldSpeed.toString(), "oldOrPrev": true })
+            }
+            if (point.type == "priority_up") {
+              var newValue = point.value.replace(/'/g, "\"")
+              var oldValue = point.oldValue.replace(/'/g, "\"")
+              const valueJson = JSON.parse(newValue)
+              const oldValueJson = JSON.parse(oldValue)
+              for (let i = 0; i < valueJson["edgesPriority"].length; i++) {
+                this.addPoint(+valueJson["edgesPriority"][i]["coordonateX"], +valueJson["edgesPriority"][i]["coordonateY"], "priority_" + valueJson["edgesPriority"][i]["priorityValue"], "priorityValue_" + point.id)
+              }
+              this.addPoint(+Number(valueJson["nodeCooX"]), +Number(valueJson["nodeCooY"]), "intersection", "priorityInt_" + point.id)
+              this.addPoint(+point.coordonateX, +point.coordonateY, point.type, "priority_" + point.id);
+              this.prevAndNewState.push({ "id": point.id, "type": "priority_up", "state": JSON.stringify(valueJson), "oldState": JSON.stringify(oldValueJson), "oldOrPrev": true })
+            }
+            if (point.type == "priority_down") {
+              var newValue = point.value.replace(/'/g, "\"")
+              var oldValue = point.oldValue.replace(/'/g, "\"")
+              const valueJson = JSON.parse(newValue)
+              const oldValueJson = JSON.parse(oldValue)
+              for (let i = 0; i < valueJson["edgesPriority"].length; i++) {
+                this.addPoint(+valueJson["edgesPriority"][i]["coordonateX"], +valueJson["edgesPriority"][i]["coordonateY"], "priority_" + valueJson["edgesPriority"][i]["priorityValue"], "priorityValue_" + point.id)
+              }
+              this.addPoint(+Number(valueJson["nodeCooX"]), +Number(valueJson["nodeCooY"]), "intersection", "priorityInt_" + point.id)
+              this.addPoint(+point.coordonateX, +point.coordonateY, point.type, "priority_" + point.id);
+              this.prevAndNewState.push({ "id": point.id, "type": "priority_down", "state": JSON.stringify(valueJson), "oldState": JSON.stringify(oldValueJson), "oldOrPrev": true })
+            }
+            if (point.type == "traffic_light") {
+              var newValue = point.value.replace(/'/g, "\"")
+              var oldValueString = point.oldValue.replace(/'/g, "\"")
+              const valueJson = JSON.parse(newValue)
+              const oldValueJson = JSON.parse(oldValueString)
+
+              point.value = valueJson;
+              point.oldValue = oldValueJson
+              for (let i = 0; i < valueJson["sortedNode"].length; i++) {
+                this.addPoint(+valueJson["sortedNode"][i]["closePoint"]["x"], +valueJson["sortedNode"][i]["closePoint"]["y"], "priority_" + String(i + 1), "tlPoint_" + point.id)
+              }
+              for (let i = 0; i < valueJson["newTlCycle"].length; i++)
+                valueJson["newTlCycle"][i]["dispBool"] = 0;
+              for (let i = 0; i < oldValueJson["newTlCycle"].length; i++)
+                oldValueJson["newTlCycle"][i]["dispBool"] = 0;
+              this.valueJson.push({
+                id: point.id,
+                oldTlCycle: JSON.stringify(oldValueJson["newTlCycle"]),
+                tlCycle: JSON.stringify(valueJson["newTlCycle"]),
+                oldOrPrev: true
+              })
+
+              this.addPoint(+point.coordonateX, +point.coordonateY, "trafficlight", "tl_" + point.id);
+              this.prevAndNewState.push({ "id": point.id, "type": "traffic_light", "state": JSON.stringify(valueJson["newTlCycle"]), "oldState": JSON.stringify(oldValueJson["newTlCycle"]), "oldOrPrev": true })
+            }
+          });
+          this.getGraphicTrip();
+          this.getGraphicRoad();
+        }
         this.titleService.setTitle("Projet " + this.project.name + " - Signai")
         this.displayConstraints()
       },

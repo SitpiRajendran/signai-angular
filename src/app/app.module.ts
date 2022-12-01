@@ -18,6 +18,8 @@ import { MoncompteComponent } from './moncompte/moncompte.component';
 import { RegisterComponent } from './register/register.component';
 import { DisconnectComponent } from './disconnect/disconnect.component';
 import { MapViewComponent } from './map-view/map-view.component';
+import { MapViewResultsComponent } from './map-view-results/map-view-results.component';
+import { ViewComponent } from './view/view.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -26,6 +28,8 @@ const routes: Routes = [
   { path: 'nocookies', component: NocookiesComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'details/:projectId', component: ProjectDetailComponent },
+  { path: 'view/:projectId', component: ViewComponent },
+  { path: 'map-results/:projectId', component: MapViewResultsComponent },
   { path: 'map/:projectId', component: MapViewComponent },
   { path: 'demande1', component: Demande1Component },
   { path: 'demande2', component: Demande2Component },
@@ -47,6 +51,8 @@ const routes: Routes = [
     RegisterComponent,
     DisconnectComponent,
     MapViewComponent,
+    MapViewResultsComponent,
+    ViewComponent,
   ],
   imports: [
     BrowserModule,
