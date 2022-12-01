@@ -517,16 +517,17 @@ export class ProjectDetailComponent implements OnInit {
     console.log("remove layer")
   }
 
-  doCopy () {
-/*     var target = this.dataset.target;
-    var fromElement = document.querySelector(target);
-    if(!fromElement) return;
-
-    var range = document.createRange();
-    var selection = window.getSelection();
-    range.selectNode(fromElement);
-    selection.removeAllRanges();
-    selection.addRange(range);
- */
+  copyMessage(val: string){
+    const selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = val;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
   }
 }

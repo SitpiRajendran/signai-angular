@@ -225,11 +225,11 @@
                         <div class="mt-5" style="display: flex; justify-content: flex-end;">
                             <button class="button has-text-weight-semibold px-5"
                                 style="background: #3724b6; border-radius: 16px; border-color: #3724b6; color: white"
-                                (click)="downloadPDF()" *ngIf="project.status == 'finished'">Télécharger le PDF<i
+                                 *ngIf="project.status == 'finished'"> <a href="{{'https://backend.signai.fr/project/pdf?id=' + project._id}}" target="_blank" style="color : white;">Télécharger le PDF</a><i
                                     class='bx bxs-file-pdf ml-1'></i></button>
                             <button class="button has-text-weight-semibold px-5 ml-2"
                                 style="background: white; border-radius: 16px; color: #3724b6;"
-                                (click)="doCopy()" *ngIf="project.status == 'finished'">Partager<i
+                                (click)="copyMessage('https://dashboard.signai.fr/view/' + project._id)" *ngIf="project.status == 'finished'">Partager<i
                                     class='bx bxs-share ml-2'></i></button>
                         </div>
                     </div>
